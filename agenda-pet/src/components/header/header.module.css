@@ -1,6 +1,6 @@
 .header {
     background-color: var(--verde);
-    height: 15vh;
+    height: 10vh;
     color: var(--branco);
     display: flex;
     justify-content: center;
@@ -23,6 +23,11 @@
     color: var(--branco);
     font-size: var(--tamanho-fonte);
 }
+.nav_bar a:hover {
+    text-decoration: none;
+    color: var(--amarelo);
+    font-size: var(--tamanho-fonte);
+}
 
 #info_header {
     display: flex;
@@ -30,8 +35,8 @@
 
 #icone {
     background-color: var(--branco);
-    width: 9vh;
-    height: 9vh;
+    width: 6vh;
+    height: 6vh;
     display: flex;
     align-items: center;
     justify-content: center;
