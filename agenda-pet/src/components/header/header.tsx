@@ -7,9 +7,9 @@ const Header = () => {
                 <img src="../imgs/LogoAgendaPet.png" alt="Logo Agenda Pet" id={styles.Logo} />
                 <nav className={styles.nav_bar}>
                     <a href="">Agendamento</a>
-                    <a href="">Historico</a>
+                    <a href="">Histórico</a>
                     <a href="">Pets</a>
-                    <a href="">Usuarios</a>
+                    <a href="">Usuários</a>
                 </nav>
                 <div id={styles.info_header}>
                     <div id={styles.icone}>
