@@ -2,9 +2,17 @@ import styles from './card.module.css';
 
 type CardProps = {
     page?: string;
+    usuario?: Usuario; 
 };
 
-const Card = ({ page }: CardProps) => {
+interface Usuario {
+    usuarioID: string,
+    nome: string,
+    numeroTelefone: number,
+    email: string,
+}
+
+const Card = ({ page, usuario }: CardProps) => {
     return (
         <>
             {page === "listaAgendamento" && (
@@ -44,9 +52,9 @@ const Card = ({ page }: CardProps) => {
 
             {page === "listaUsuarios" && (
                 <tr className={styles.trCard}>
-                    <td>Allan</td>
-                    <td>(11) 99999-9999</td>
-                    <td>allan@gmail.com</td>
+                    <td>{usuario?.nome}</td>
+                    <td>{usuario?.numeroTelefone}</td>
+                    <td>{usuario?.email}</td>
                     <td><img src="../imgs/IconePatinhaEditar.png" alt="" /></td>
                     <td><img src="../imgs/IconePatinhaInformacoes.png" alt="" /></td>
                 </tr>
