@@ -2,9 +2,20 @@ import styles from './card.module.css';
 
 type CardProps = {
     page?: string;
+    pet?: Pet;
 };
 
-const Card = ({ page }: CardProps) => {
+interface Pet {
+    petID: string,
+    nome: string,
+    tipoAnimal: string,
+    comportamento: string,
+    raca: string,
+    porte: string,
+    nomeDono: string
+}
+
+const Card = ({ page, pet }: CardProps) => {
     return (
         <>
             {page === "listaAgendamento" && (
@@ -33,12 +44,12 @@ const Card = ({ page }: CardProps) => {
             {page === "listaPets" && (
 
                 <tr className={styles.trCard}>
-                    <td>Fofinho</td>
-                    <td>Raivoso</td>
-                    <td>Cachorro</td>
-                    <td>Allan</td>
-                    <td>Shitzu</td>
-                    <td>Pequeno</td>
+                    <td>{pet?.nome}</td>
+                    <td>{pet?.comportamento}</td>
+                    <td>{pet?.tipoAnimal}</td>
+                    <td>{pet?.nomeDono}</td>
+                    <td>{pet?.raca}</td>
+                    <td>{pet?.porte}</td>
                 </tr>
             )}
 
