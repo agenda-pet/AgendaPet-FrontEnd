@@ -1,13 +1,13 @@
 import { api } from "./api";
 
-export async function listarUsuarios() {
-    try {
-        const response = await api.get("Usuario");
 
-        console.log(response.data);
+export async function listarTipoUsuarios() {
+    try {
+        const response = await api.get("TipoUsuario");
+
         return response;
-        
     } catch (error: any) {
         throw new Error(error.response.data);
     }
+
 }

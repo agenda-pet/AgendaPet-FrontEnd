@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Card from '../card/card';
 import styles from './lista.module.css';
-import { listarUsuarios } from '@/pages/api/usuario';
+import { listarUsuarios } from '@/pages/api/usuarioService';
 
 type ListaProps = {
     page?: string;
