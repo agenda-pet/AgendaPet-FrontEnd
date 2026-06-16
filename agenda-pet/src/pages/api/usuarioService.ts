@@ -1,3 +1,4 @@
+import { title } from "process";
 import { api } from "./api";
 
 type UsuarioFormulario = {
@@ -55,18 +56,23 @@ export async function cadastrarUsuario(usuario: UsuarioFormulario) {
     }
 }
 
-export async function editarUsuario(id: number, usuario: EditarUsuarioForm) {
+export async function obterUsuarioPorId(id: string) {
     try {
-        const formData = new FormData();
-        formData.append("nome", usuario.nome);
-        formData.append("email", usuario.email);
-        formData.append("numeroTelefone", usuario.numeroTelefone);
-        formData.append("tipoUsuario", usuario.tipoUsuarioID);
-
-        console.log(formData);
-        await api.put("Usuario/" +  id, formData);
+        const response = await api.get("Usuario/UsuarioId/" + id);
+        return response.data;
     } catch (error: any) {
-        throw new Error(error)
+        throw new Error(error.response.data);
+    }
+}
+
+export async function editarUsuario(id: string, usuario: EditarUsuarioForm) {
+    try {
+        console.log(usuario);
+        console.log(JSON.stringify(usuario, null, 2));
+        await api.patch(`Usuario/Atualizar/${id}`, usuario);
+
+    } catch (error: any) {
+        throw new Error(error.response.data);
     }
 }
 
