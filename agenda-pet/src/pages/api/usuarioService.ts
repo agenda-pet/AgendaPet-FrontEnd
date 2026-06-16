@@ -8,13 +8,20 @@ type UsuarioFormulario = {
     tipoUsuarioID: string;
 }
 
+type EditarUsuarioForm = {
+    nome: string;
+    email: string;
+    numeroTelefone: string;
+    tipoUsuarioID: string;
+}
+
 export async function listarUsuarios() {
     try {
         const response = await api.get("Usuario");
 
         console.log(response.data);
         return response;
-        
+
     } catch (error: any) {
         throw new Error(error.response.data);
     }
@@ -35,7 +42,7 @@ export async function cadastrarUsuario(usuario: UsuarioFormulario) {
 
         // await api.post("Usuario", formData);
 
-         await api.post("Usuario", {
+        await api.post("Usuario", {
             nome: usuario.nome,
             numeroTelefone: usuario.numeroTelefone,
             email: usuario.email,
@@ -43,8 +50,23 @@ export async function cadastrarUsuario(usuario: UsuarioFormulario) {
             tipoUsuarioID: usuario.tipoUsuarioID,
         });
 
-    }catch (error: any) {
+    } catch (error: any) {
         throw new Error(error.response.data);
+    }
+}
+
+export async function editarUsuario(id: number, usuario: EditarUsuarioForm) {
+    try {
+        const formData = new FormData();
+        formData.append("nome", usuario.nome);
+        formData.append("email", usuario.email);
+        formData.append("numeroTelefone", usuario.numeroTelefone);
+        formData.append("tipoUsuario", usuario.tipoUsuarioID);
+
+        console.log(formData);
+        await api.put("Usuario/" +  id, formData);
+    } catch (error: any) {
+        throw new Error(error)
     }
 }
 
