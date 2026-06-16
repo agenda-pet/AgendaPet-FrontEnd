@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Card from '../card/card';
 import styles from './lista.module.css';
-import { listarPets } from '@/pages/api/pet';
+import { listarPets } from '@/pages/api/petService';
 
 type ListaProps = {
     page?: string;
