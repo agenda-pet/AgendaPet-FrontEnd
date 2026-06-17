@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import styles from "../formEditar/formEditar.module.css"
-import { editarUsuario, obterUsuarioPorId } from '@/pages/api/usuarioService'
+import styles from "../formUsuario/formUsuario.module.css"
+import { cadastrarUsuario, editarUsuario, obterUsuarioPorId } from '@/pages/api/usuarioService'
 import { useRouter } from 'next/router'
 import { useParams, useSearchParams } from 'next/navigation'
 import { listarTipoUsuarios } from '@/pages/api/tipoUsuarioService'
@@ -10,76 +10,86 @@ interface tipoUsuario {
     nomeRaca: string;
 }
 
-interface usuarioForma {
-    usuarioID: string;
-    nome: string,
-    numeroTelefone: string,
-    email: string,
-    tipoUsuarioID: string,
-    statusUsuarioID: boolean,
-    nomePet: any
+interface UsuarioRecebido {
+    usuarioID?: string;
+    nome?: string,
+    numeroTelefone?: string,
+    email?: string,
+    tipoUsuarioID?: string,
+    statusUsuarioID?: boolean,
+    nomePet?: any
 }
 
+type UsuarioFormulario = {
+    nome: string;
+    email: string;
+    numeroTelefone: string;
+    senha: string;
+    tipoUsuarioID: string;
+}
 
-const FormEditar = () => {
+const FormUsuario = (usuarioRecebido?: UsuarioRecebido) => {
     const [nome, setUsuarioNome] = useState<string>("");
     const [numeroTelefone, setUsuarioTelefone] = useState<string>("");
     const [email, setUsuarioEmail] = useState<string>("");
-    const [tiposUsuario, setTiposUsuario] = useState<tipoUsuario[]>([])
+    const [tiposUsuario, setTiposUsuario] = useState<tipoUsuario[]>([]);
     const [tipoUsuarioID, setTipoUsuario] = useState<string>("");
-    const [usuarioBuscado, setUsuarioBuscado] = useState<usuarioForma | null>(null)
+    const [senha, setSenha] = useState("");
 
-    const usuario = {
+    const UsuarioFormulario = {
+        nome,
+        email,
+        numeroTelefone,
+        senha,
+        tipoUsuarioID
+    }
+
+    const usuarioEditado = {
         nome,
         numeroTelefone,
         email,
         tipoUsuarioID,
     }
 
-    async function lerUsuario() {
-        const tipos = await obterUsuarioPorId(String(id));
-        setUsuarioBuscado(tipos as any);
-    }
-
     async function pegarTipos() {
         const tipos = await listarTipoUsuarios();
-        setTiposUsuario(tipos as any);
+        setTiposUsuario(tipos);
     }
 
-    const router = useRouter();
-    const id = router.query.id;
     useEffect(() => {
-        if (!router.isReady) return;
-        lerUsuario();
         pegarTipos();
+    }, [])
 
-    }, [router.isReady]);
+    useEffect(() => {
+        setSenha(numeroTelefone.slice(7));
+        console.log(senha)
+    }, [usuarioEditado])
 
     return (
         <form id={styles.editar} onSubmit={(e) => {
             e.preventDefault();
-            console.log(usuario)
+            console.log(usuarioEditado)
             console.log(`O nome é: ${nome}
                         O email: ${email}
                         O telefone: ${numeroTelefone}
                         O tipo ${tipoUsuarioID}`);
 
-            editarUsuario(String(id), usuario);
+            usuarioRecebido?.usuarioID !== null ? editarUsuario(String(usuarioRecebido?.usuarioID), usuarioEditado) : cadastrarUsuario(UsuarioFormulario);
         }}>
 
             <div id={styles.form_content}>
-                <h3>{usuarioBuscado?.nome}:</h3>
+                <h3><strong>Editar usuario:</strong></h3>
                 <div id={styles.inputs_button}>
 
                     <div id={styles.inputs_container}>
                         <div className={styles.input}>
                             <label htmlFor="nome">Nome:</label>
-                            <input type="text" className={styles.input_tipo1} onChange={(e) => setUsuarioNome(e.target.value)} />
+                            <input type="text" className={styles.input_tipo1} onChange={(e) => setUsuarioNome(e.target.value) ?? usuarioRecebido?.nome} defaultValue={usuarioRecebido?.nome ?? ""} />
                         </div>
 
                         <div className={styles.input}>
                             <label htmlFor="email">Email:</label>
-                            <input type="email" className={styles.input_tipo1} onChange={(e) => setUsuarioEmail(e.target.value)} />
+                            <input type="email" className={styles.input_tipo1} onChange={(e) => setUsuarioEmail(e.target.value) ?? usuarioRecebido?.email} defaultValue={usuarioRecebido?.email ?? ""} />
                         </div>
 
                         <div className={styles.input}>
@@ -93,7 +103,7 @@ const FormEditar = () => {
 
                         <div className={styles.input}>
                             <label htmlFor="numero">Numero:</label>
-                            <input type='tel' name="numero" className={styles.input_tipo2} onChange={(e) => setUsuarioTelefone(e.target.value)} />
+                            <input type='tel' name="numero" className={styles.input_tipo2} defaultValue={usuarioRecebido?.numeroTelefone ?? ""} onChange={(e) => setUsuarioTelefone(e.target.value) ?? usuarioRecebido?.numeroTelefone} />
                         </div>
                     </div>
 
@@ -104,4 +114,4 @@ const FormEditar = () => {
     )
 }
 
-export default FormEditar
+export default FormUsuario
