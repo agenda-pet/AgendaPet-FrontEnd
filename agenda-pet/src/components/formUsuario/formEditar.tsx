@@ -35,13 +35,15 @@ const FormUsuario = (usuarioRecebido?: UsuarioRecebido) => {
     const [tiposUsuario, setTiposUsuario] = useState<tipoUsuario[]>([]);
     const [tipoUsuarioID, setTipoUsuario] = useState<string>("");
     const [senha, setSenha] = useState("");
+    const statusUsuario = true;
 
     const UsuarioFormulario = {
         nome,
-        email,
         numeroTelefone,
+        email,
         senha,
-        tipoUsuarioID
+        statusUsuario,
+        tipoUsuarioID,
     }
 
     const usuarioEditado = {
@@ -74,11 +76,11 @@ const FormUsuario = (usuarioRecebido?: UsuarioRecebido) => {
                         O telefone: ${numeroTelefone}
                         O tipo ${tipoUsuarioID}`);
 
-            usuarioRecebido?.usuarioID !== null ? editarUsuario(String(usuarioRecebido?.usuarioID), usuarioEditado) : cadastrarUsuario(UsuarioFormulario);
+            usuarioRecebido?.usuarioID == null ? cadastrarUsuario(UsuarioFormulario) : editarUsuario(String(usuarioRecebido?.usuarioID), usuarioEditado);
         }}>
 
             <div id={styles.form_content}>
-                <h3><strong>Editar usuario:</strong></h3>
+                <h3><strong>{usuarioRecebido?.usuarioID == null ? 'Cadatrar usuario' : 'Editar usuario'}:</strong></h3>
                 <div id={styles.inputs_button}>
 
                     <div id={styles.inputs_container}>

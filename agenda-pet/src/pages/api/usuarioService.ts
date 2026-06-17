@@ -80,7 +80,7 @@ export async function editarUsuario(id: string, usuario: EditarUsuarioForm) {
                 mensagem: error.response.data?.message || error.response.data?.error || 'Erro na requisição'
             };
 
-            throw new Error(JSON.stringify(erroTratado));
+            throw new Error(error.response.data);
         }
     }
 }
