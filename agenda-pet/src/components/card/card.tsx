@@ -2,19 +2,29 @@ import styles from './card.module.css';
 
 type CardProps = {
     page?: string;
+    agendamento?: Agendamento;
 };
 
-const Card = ({ page }: CardProps) => {
+interface Agendamento {
+    agendamentoID: string,
+    dataAgendamento: string, 
+    horaAgendamento: string,
+    nomePorte: string,
+    nomeRaca: string,
+    nomeTutor: string,
+}
+
+const Card = ({ page, agendamento }: CardProps) => {
     return (
         <>
             {page === "listaAgendamento" && (
 
                 <tr className={styles.trCard}>
-                    <td>09/10/2021</td>
-                    <td>17:00</td>
-                    <td>Shitzu</td>
-                    <td>Pequeno</td>
-                    <td>Allan</td>
+                    <td>{agendamento?.dataAgendamento}</td>
+                    <td>{agendamento?.horaAgendamento}</td>
+                    <td>{agendamento?.nomeRaca}</td>
+                    <td>{agendamento?.nomePorte}</td>
+                    <td>{agendamento?.nomeTutor}</td>
                     <td id={styles.dropdown_wrapper}>
                         <button className={styles.dropdown_btn} id="dropdownBtn">
                             <span>Banho</span>

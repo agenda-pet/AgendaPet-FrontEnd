@@ -1,11 +1,39 @@
+import { useEffect, useState } from 'react';
 import Card from '../card/card';
 import styles from './lista.module.css';
+import { listarAgendamentos } from '@/pages/api/agendamentoService';
 
 type ListaProps = {
     page?: string;
 };
 
+interface Agendamento {
+    agendamentoID: string,
+    dataAgendamento: string,
+    horaAgendamento: string,
+    nomePorte: string,
+    nomeRaca: string,
+    nomeTutor: string,
+}
+
+
 const Lista = ({ page }: ListaProps) => {
+
+    const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
+
+    async function listarAgenda() {
+        try {
+            const listarAgendamento = await listarAgendamentos();
+            setAgendamentos(listarAgendamento.data);
+        } catch (error: any) {
+            console.log(error.mensage);
+        }
+    }
+
+    useEffect(() => {
+        listarAgenda();
+    }, [])
+
     return (
         <>
             {page === "listaAgendamento" && (
@@ -25,18 +53,25 @@ const Lista = ({ page }: ListaProps) => {
                         </thead>
 
                         <tbody id={styles.tbody}>
-                            <Card page="listaAgendamento"/>
-                            <Card page="listaAgendamento"/>
-                            <Card page="listaAgendamento"/>
-                            <Card page="listaAgendamento"/>
-                            <Card page="listaAgendamento"/>
+                            {agendamentos?.length > 0 ? agendamentos.map((agendamento) => (
+                                <Card
+                                    key={agendamento.agendamentoID}
+                                    page="listaAgendamento"
+                                    agendamento={agendamento}
+                                />
+                            )) : (
+                                <tr>
+                                    <td>Nenhum agendamento encontrado
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </section>
             )}
 
             {page === "listaPets" && (
-                  <section className={styles.section}>
+                <section className={styles.section}>
                     <table className={styles.tabelaLista}>
                         <thead id={styles.thead}>
                             <tr>
@@ -50,18 +85,18 @@ const Lista = ({ page }: ListaProps) => {
                         </thead>
 
                         <tbody id={styles.tbody}>
-                            <Card page="listaPets"/>
-                            <Card page="listaPets"/>
-                            <Card page="listaPets"/>
-                            <Card page="listaPets"/>
-                            <Card page="listaPets"/>
+                            <Card page="listaPets" />
+                            <Card page="listaPets" />
+                            <Card page="listaPets" />
+                            <Card page="listaPets" />
+                            <Card page="listaPets" />
                         </tbody>
                     </table>
                 </section>
             )}
 
             {page === "listaUsuarios" && (
-                  <section className={styles.section}>
+                <section className={styles.section}>
                     <table className={styles.tabelaLista}>
                         <thead id={styles.thead}>
                             <tr>
@@ -74,11 +109,11 @@ const Lista = ({ page }: ListaProps) => {
                         </thead>
 
                         <tbody id={styles.tbody}>
-                            <Card page="listaUsuarios"/>
-                            <Card page="listaUsuarios"/>
-                            <Card page="listaUsuarios"/>
-                            <Card page="listaUsuarios"/>
-                            <Card page="listaUsuarios"/>
+                            <Card page="listaUsuarios" />
+                            <Card page="listaUsuarios" />
+                            <Card page="listaUsuarios" />
+                            <Card page="listaUsuarios" />
+                            <Card page="listaUsuarios" />
                         </tbody>
                     </table>
                 </section>
