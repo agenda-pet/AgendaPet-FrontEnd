@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import secureLocalStorage from "react-secure-storage";
 import styles from "./login.module.css";
-import { erro, notificacao } from "@/utils/toast";
+import { erro, sucesso } from "@/utils/toast";
 import { login } from "../api/authService";
 
 const Login = () => {
@@ -15,6 +15,11 @@ const Login = () => {
     async function fazerLogin(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
+        if (!email.trim() || !senha.trim()) {
+            erro("Por favor, preencha todos os campos!");
+            return;
+        }
+
         try {
             const resposta = await login(
                 email,
@@ -23,7 +28,7 @@ const Login = () => {
 
             console.log(resposta)
 
-            notificacao("Login bem sucedido!")
+            sucesso("Login bem sucedido!")
 
             router.push("/home");
         } catch (error: any) {
