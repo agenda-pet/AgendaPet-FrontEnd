@@ -38,3 +38,125 @@
     border-bottom-right-radius: 10px;
 }
 
+.containerDetalhes {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+    padding-bottom: 40px;
+}
+
+.voltarContainer {
+    margin-top: 20px;
+    padding-top: 10px;
+}
+
+.btnVoltar {
+    color: var(--laranja);
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: 25;
+}
+
+.tituloSecao {
+    margin: 25px 0 15px 0;
+    font-size: 22px;
+    color: #1a1a1a;
+}
+
+.subTituloSecao {
+    margin: 30px 0 15px 0;
+    font-size: 20px;
+    color: #1a1a1a;
+}
+
+.cardAgendamentoAtual {
+    background-color: var(--cor-card);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.infoGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-size: 13px;
+    color: #7a7566;
+    margin-bottom: 6px;
+}
+
+.valor {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1a1a1a;
+}
+
+
+.historicoLista {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cardHistoricoContainer {
+    background-color: #e6dfcc;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.tabelaInternaHistorico {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabelaInternaHistorico th {
+    color: #666;
+    font-weight: normal;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #c4bfae;
+    font-size: 14px;
+}
+
+.tabelaInternaHistorico td {
+    padding: 15px 0;
+    text-align: center;
+    font-size: 15px;
+}
+
+.statusPendente {
+    background-color: #e8be6b;
+    color: #594111;
+    padding: 6px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.selectServicos {
+    background-color: #fffdec;
+    border: 1px solid #d1cbba;
+    padding: 6px 12px;
+    border-radius: 6px;
+    color: #333;
+}
+
+/* Data de Alteração inferior */
+.dataAlteracaoContainer {
+    margin-top: 10px;
+}
+
+.dataAlteracaoContainer span {
+    background-color: #ffffff;
+    padding: 6px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+}

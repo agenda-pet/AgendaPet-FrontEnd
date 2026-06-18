@@ -19,7 +19,7 @@ interface Pet {
 
 interface Servico {
     servicoID: string;
-    nomeService: string;
+    nomeServico: string;
 }
 
 const ListaAgendamento = () => {
@@ -59,6 +59,8 @@ const ListaAgendamento = () => {
                 servicosIds: servicoSelecionados
             }
 
+            console.log(JSON.stringify(dados));
+
             await cadastrarAgendamento(dados);
             alert("Agendamento cadastrado com sucesso");
         } catch (error: any) {
@@ -71,6 +73,11 @@ const ListaAgendamento = () => {
         listarServicoEmAgendamento();
         listarUsuarioEmAgendamento();
     }, [])
+    console.log(usuarioSelecionado);
+    console.log(servicoSelecionados);
+    console.log(petSelecionado);
+    console.log(horario);
+    console.log(data);
 
     return (
         <>
@@ -98,10 +105,10 @@ const ListaAgendamento = () => {
                     </select>
 
                     <label htmlFor="">Hora</label>
-                    <input type="text" value={horario} onChange={(e) => setHorario(e.target.value)}/>
+                    <input type="text" value={horario} onChange={(e) => setHorario(e.target.value)} />
 
                     <label htmlFor="">Data</label>
-                    <input type="text" value={data} onChange={(e) => setData(e.target.value)}/>
+                    <input type="text" value={data} onChange={(e) => setData(e.target.value)} />
 
                     <label htmlFor="">Servico</label>
                     <select
@@ -112,7 +119,7 @@ const ListaAgendamento = () => {
                         )}
                     >
                         {servicos.map((item) => (
-                            <option value={item.servicoID} key={item.servicoID}>{item.nomeService}</option>
+                            <option value={item.servicoID} key={item.servicoID}>{item.nomeServico}</option>
                         ))}
                     </select>
 

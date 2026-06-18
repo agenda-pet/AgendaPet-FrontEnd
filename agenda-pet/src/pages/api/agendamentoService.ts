@@ -14,8 +14,7 @@ export async function listarAgendamentos() {
     try {
         const response = await api.get("Agendamento")
 
-        console.log(response.data);
-        return response.data;
+        return response;
     } catch (error: any) {
         throw new Error(error.response.data)
     }
@@ -32,6 +31,10 @@ export async function cadastrarAgendamento(agendamento: AgendamentoFormulario) {
         });
 
     } catch (error: any) {
-        throw new Error(error.response.data)
+        throw new Error(
+            error.response?.data?.title ||
+            error.response?.data ||
+            error.message ||
+            "Erro ao cadastrar jogo")
     }
 }

@@ -64,3 +64,79 @@
   background-color: #f7f3e8;
   color: #000;
 }
+
+.cardHistoricoContainer {
+    background-color: var(--cor-card);
+    border-radius: 12px;
+    padding: 20px 30px;
+    box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.05), 0px 4px 10px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Tabela interna estruturada para alinhar as colunas perfeitamente */
+.tabelaInternaHistorico {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Cabeçalho das colunas dentro do histórico */
+.tabelaInternaHistorico th {
+    color: #615e55;
+    font-weight: 500;
+    font-size: 15px;
+    padding-bottom: 12px;
+    border-bottom: 1.5px solid #b8b3a5; 
+    text-align: center;
+}
+
+/* Dados da tabela do histórico */
+.tabelaInternaHistorico td {
+    padding: 18px 10px 10px 10px;
+    text-align: center;
+    color: #1a1a1a;
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+/* Badge/Etiqueta do Status "Pendente" */
+.statusPendente {
+    background-color: #e8be6b;
+    color: #4a360d;
+    padding: 8px 30px;
+    border-radius: 10px;
+    font-weight: bold;
+    display: inline-block;
+    font-size: 15px;
+}
+
+/* Caixa de seleção (Select) de Serviços */
+.selectServicos {
+    background-color: #ffffff;
+    padding: 8px 15px;
+    border-radius: 8px;
+    color: #2b2b2b;
+    font-size: 15px;
+    cursor: pointer;
+    outline: none;
+    min-width: 140px;
+}
+
+/* Container do balão branco de "Data Alteração" */
+.dataAlteracaoContainer {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 5px;
+}
+
+/* O balão branco em si */
+.dataAlteracaoContainer span {
+    background-color: #ffffff;
+    color: #1a1a1a;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+}
