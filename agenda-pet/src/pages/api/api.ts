@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import secureLocalStorage from "react-secure-storage";
 import axios from "axios";
 
@@ -23,6 +24,10 @@ api.interceptors.request.use((config) => {
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
 
+=======
+import axios from "axios";
+
+>>>>>>> feature/listaPets
 const apiLocal = " https://localhost:7057/api/";
 
 const apiRemota = "";
@@ -40,5 +45,9 @@ export const api = axios.create({
 //     }
 
 //     return config;
+<<<<<<< HEAD
 // });
 >>>>>>> feature/listaUsuarios
+=======
+// });
+>>>>>>> feature/listaPets

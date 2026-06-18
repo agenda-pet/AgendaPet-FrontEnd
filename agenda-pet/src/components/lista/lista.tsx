@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Card from '../card/card';
 import styles from './lista.module.css';
-import { listarUsuarios } from '@/pages/api/usuarioService';
 
 type ListaProps = {
     page?: string;
@@ -12,6 +12,16 @@ interface Usuario {
     nome: string,
     numeroTelefone: number,
     email: string,
+}
+
+interface Pet {
+    petID: string,
+    nome: string,
+    tipoAnimal: string,
+    comportamento: string,
+    raca: string,
+    porte: string,
+    nomeDono: string
 }
 
 const Lista = ({ page }: ListaProps) => {
@@ -30,6 +40,22 @@ const Lista = ({ page }: ListaProps) => {
 
     useEffect(() => {
         listarUsu();
+    }, [])
+
+
+    const [pets, setPets] = useState<Pet[]>([]);
+
+    async function listarPet() {
+        try {
+            const listarAnimal = await listarPets();
+            setPets(listarAnimal);
+        } catch (error: any) {
+            console.log(error.message);
+        }
+    }
+
+    useEffect(() => {
+        listarPet();
     }, [])
 
     return (
@@ -56,13 +82,18 @@ const Lista = ({ page }: ListaProps) => {
                             <Card page="listaAgendamento" />
                             <Card page="listaAgendamento" />
                             <Card page="listaAgendamento" />
+                            <Card page="listaAgendamento" />
+                            <Card page="listaAgendamento" />
+                            <Card page="listaAgendamento" />
+                            <Card page="listaAgendamento" />
+                            <Card page="listaAgendamento" />
                         </tbody>
                     </table>
                 </section>
             )}
 
             {page === "listaPets" && (
-                <section className={styles.section}>
+                  <section className={styles.section}>
                     <table className={styles.tabelaLista}>
                         <thead id={styles.thead}>
                             <tr>
@@ -76,18 +107,25 @@ const Lista = ({ page }: ListaProps) => {
                         </thead>
 
                         <tbody id={styles.tbody}>
-                            <Card page="listaPets" />
-                            <Card page="listaPets" />
-                            <Card page="listaPets" />
-                            <Card page="listaPets" />
-                            <Card page="listaPets" />
+                            {pets.length > 0 ? pets.map((pet) => (
+                                <Card
+                                    key={pet.petID}
+                                    page="listaPets"
+                                    pet={pet}
+                                />
+                            )) : (
+                                <tr>
+                                    <td >Nenhum pet  encontrado</td>
+                                </tr>
+                            )}
+
                         </tbody>
                     </table>
                 </section>
             )}
 
             {page === "listaUsuarios" && (
-                <section className={styles.section}>
+                  <section className={styles.section}>
                     <table className={styles.tabelaLista}>
                         <thead id={styles.thead}>
                             <tr>

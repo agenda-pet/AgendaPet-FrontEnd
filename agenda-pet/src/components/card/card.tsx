@@ -3,8 +3,19 @@ import styles from './card.module.css';
 
 type CardProps = {
     page?: string;
+    pet?: Pet;
     usuario?: Usuario;
 };
+
+interface Pet {
+    petID: string,
+    nome: string,
+    tipoAnimal: string,
+    comportamento: string,
+    raca: string,
+    porte: string,
+    nomeDono: string
+}
 
 interface Usuario {
     usuarioID: string,
@@ -13,7 +24,7 @@ interface Usuario {
     email: string,
 }
 
-const Card = ({ page, usuario }: CardProps) => {
+const Card = ({ page, usuario, pet }: CardProps) => {
 
     
     return (

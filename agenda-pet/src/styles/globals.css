@@ -12,4 +12,11 @@
     --cor-fundo: #F9F3E3;
     --cor-card: #E5D7BB;
     --tamanho-fonte: 20px;
+    --sombra-card: 2px 2px 10px rgba(0, 0, 0, 0.40) inset;
+    --sombra-inputs: 2px 2px 5px rgba(0, 0, 0, 0.39) inset;
+}
+
+.display-grid{
+    margin: 0 auto;
+    width: 80%;
 }
