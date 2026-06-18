@@ -1,0 +1,98 @@
+.area_principal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    margin: 0;
+    background-image: url('/imgs/imagemFundo2.png');
+}
+
+.questionario{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 60%;
+    height: 40%;
+    background-color: var(--cor-card);
+    border-radius: 20px;
+    box-shadow: 3px 3px 10px hsla(0, 0%, 0%, 0.40) inset;
+}
+
+.questionario label{
+    font-size: 1.2rem;
+    white-space: nowrap;
+}
+.container_h1{
+    width: 90%;
+    height: 0px;
+}
+.questionario h1 {
+    align-self: self-start;
+}
+
+.container_editar{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 80%;
+    height: 40%;
+
+
+}
+
+.area_editar{
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.area_editar div{
+    width: 28%;
+    display: flex;
+    flex-direction: column;
+}
+
+.area_editar input,
+.area_editar select,
+.area_editar2 select{
+    width: 100%;
+    padding: 3% 5% 3% 5%;
+    height: 40px;
+    background-color: var(--cor-fundo);
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px hsla(0, 0%, 0%, 0.40) inset;
+    border: none;
+}
+
+.area_editar2{
+    display: flex;
+    gap: 8%;
+    
+}
+.area_editar2 div{
+    width: 22%;
+    display: flex;
+    flex-direction: column;
+    
+    
+
+}
+
+.questionario button{
+    width: 20%;
+    height: 40px;
+    background-color: var(--verde);
+    color: var(--amarelo);
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px hsla(0, 0%, 0%, 0.40) inset;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.questionario button:hover{
+    background-color: #267e46;
+}
+
+
