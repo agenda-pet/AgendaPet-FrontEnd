@@ -20,6 +20,16 @@ export async function listarAgendamentos() {
     }
 }
 
+export async function listarAgendamentosPorId(id: string) {
+    try {
+        const response = await api.get("Agendamento/" + id);
+
+        return response;
+    } catch(error:any) {
+        throw new Error(error.response.data);
+    }
+}
+
 export async function cadastrarAgendamento(agendamento: AgendamentoFormulario) {
     try {
         await api.post("Agendamento", {

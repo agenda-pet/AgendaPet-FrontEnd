@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styles from './card.module.css';
 
 type CardProps = {
@@ -7,7 +8,7 @@ type CardProps = {
 
 interface Agendamento {
     agendamentoID: string,
-    dataAgendamento: string, 
+    dataAgendamento: string,
     horaAgendamento: string,
     nomePorte: string,
     nomeRaca: string,
@@ -36,7 +37,8 @@ const Card = ({ page, agendamento }: CardProps) => {
                             <li className={styles.dropdown_item} data-value="consulta">Consulta</li>
                         </ul>
                     </td>
-                    <td><img src="../imgs/IconePatinhaEditar.png" alt="" /></td>
+                    <td> <Link href={"/detalhes/" + agendamento?.agendamentoID}><img src="../imgs/IconePatinhaEditar.png" alt="" /></Link></td>
+
                 </tr>
             )}
 
@@ -77,8 +79,8 @@ const Card = ({ page, agendamento }: CardProps) => {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>09/02/2026</td>
-                                <td>Belinha</td>
+                                <td>Data</td>
+                                <td>Nome Pet</td>
                                 <td>17:30</td>
                                 <td>Allan</td>
                                 <td>
