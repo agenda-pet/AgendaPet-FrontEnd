@@ -23,7 +23,7 @@ const Usuarios = () => {
 
     async function listarTipoUsuarioEmUsuario() {
         const listaTipoUsuarios = await listarTipoUsuarios();
-        console.log(listaTipoUsuarios);
+        console.log(listaTipoUsuarios.data);
         setTipoUsuarios(listaTipoUsuarios.data);
     }
 
