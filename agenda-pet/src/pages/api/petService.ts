@@ -9,20 +9,35 @@ type PetFormulario = {
     usuarioID: string;
 }
 
+type PetAtualizar = {
+    nome: string;
+    comportamentoID: string;
+    porteID: string;
+    usuarioID: string;
+}
 
 export async function listarPets() {
     try {
         const response = await api.get("Pet");
 
-        console.log(response.data); 
-        return response.data;   
+        console.log(response.data);
+        return response.data;
     } catch (error: any) {
         throw new Error(error.response.data);
     }
 }
 
-export async function cadastrarPets (pet: PetFormulario) {
-    try{
+export async function obterPetPorID(id:string) {
+    try {
+        const response = await api.get("Pet/" + id);
+        return response.data;
+    } catch (error : any) {
+        throw new Error(error.response.data)
+    }
+}
+
+export async function cadastrarPets(pet: PetFormulario) {
+    try {
         await api.post("Pet", {
             nome: pet.nome,
             tipoAnimalID: pet.tipoAnimalID,
@@ -31,8 +46,17 @@ export async function cadastrarPets (pet: PetFormulario) {
             porteID: pet.porteID,
             usuarioID: pet.usuarioID,
         });
-        
-    }catch (error: any) {
+
+    } catch (error: any) {
+        throw new Error(error.response.data);
+    }
+}
+export async function atualizarPet(id: string, PetAtualizar: PetAtualizar) {
+    try {
+        console.log(PetAtualizar)
+        await api.put("Pet/", id + PetAtualizar);
+        console.log("Pet atualizado com sucesso!")
+    } catch (error: any) {
         throw new Error(error.response.data);
     }
 }
