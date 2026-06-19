@@ -1,4 +1,3 @@
-import { StagedRenderingController } from "next/dist/server/app-render/staged-rendering";
 import { api } from "./api";
 
 type PetFormulario = {

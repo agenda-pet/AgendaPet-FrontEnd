@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react';
+<<<<<<< HEAD
 import { useEffect, useState } from 'react';
+=======
+>>>>>>> feature/listaAgendamentos
 import Card from '../card/card';
 import styles from './lista.module.css';
+import { listarAgendamentos } from '@/pages/api/agendamentoService';
+import Link from 'next/link';
 
 type ListaProps = {
     page?: string;
 };
 
+<<<<<<< HEAD
 interface Usuario {
     usuarioID: string,
     nome: string,
@@ -22,10 +28,21 @@ interface Pet {
     raca: string,
     porte: string,
     nomeDono: string
+=======
+interface Agendamento {
+    agendamentoID: string,
+    dataAgendamento: string,
+    horaAgendamento: string,
+    nomePorte: string,
+    nomeRaca: string,
+    nomeTutor: string,
+    nomePet: string,
+>>>>>>> feature/listaAgendamentos
 }
 
 const Lista = ({ page }: ListaProps) => {
 
+<<<<<<< HEAD
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
     async function listarUsu() {
@@ -49,19 +66,30 @@ const Lista = ({ page }: ListaProps) => {
         try {
             const listarAnimal = await listarPets();
             setPets(listarAnimal);
+=======
+    const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
+
+    async function listarAgenda() {
+        try {
+            const listarAgendamento = await listarAgendamentos();
+            setAgendamentos(listarAgendamento.data);
+>>>>>>> feature/listaAgendamentos
         } catch (error: any) {
             console.log(error.message);
         }
     }
 
     useEffect(() => {
+<<<<<<< HEAD
         listarPet();
+=======
+        listarAgenda();
+>>>>>>> feature/listaAgendamentos
     }, [])
 
     return (
         <>
             {page === "listaAgendamento" && (
-
                 <section className={styles.section}>
                     <table className={styles.tabelaLista}>
                         <thead id={styles.thead}>
@@ -75,8 +103,8 @@ const Lista = ({ page }: ListaProps) => {
                                 <th>Editar</th>
                             </tr>
                         </thead>
-
                         <tbody id={styles.tbody}>
+<<<<<<< HEAD
                             <Card page="listaAgendamento" />
                             <Card page="listaAgendamento" />
                             <Card page="listaAgendamento" />
@@ -87,11 +115,25 @@ const Lista = ({ page }: ListaProps) => {
                             <Card page="listaAgendamento" />
                             <Card page="listaAgendamento" />
                             <Card page="listaAgendamento" />
+=======
+                            {agendamentos?.length > 0 ? agendamentos.map((agendamento) => (
+                                <Card
+                                    key={agendamento.agendamentoID}
+                                    page="listaAgendamento"
+                                    agendamento={agendamento}
+                                />
+                            )) : (
+                                <tr>
+                                    <td colSpan={7}>Nenhum agendamento encontrado</td>
+                                </tr>
+                            )}
+>>>>>>> feature/listaAgendamentos
                         </tbody>
                     </table>
                 </section>
             )}
 
+<<<<<<< HEAD
             {page === "listaPets" && (
                   <section className={styles.section}>
                     <table className={styles.tabelaLista}>
@@ -153,6 +195,9 @@ const Lista = ({ page }: ListaProps) => {
                     </table>
                 </section>
             )}
+=======
+          
+>>>>>>> feature/listaAgendamentos
         </>
     )
 }
