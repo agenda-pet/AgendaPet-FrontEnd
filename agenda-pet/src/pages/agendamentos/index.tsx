@@ -7,6 +7,7 @@ import { listarPets } from "../api/petService";
 import { listarServicos } from "../api/servicoService";
 import { cadastrarAgendamento } from "../api/agendamentoService";
 import Header from "@/components/header/header";
+import CadastroAgendamento from "@/components/Form/cadastrar-agendamento";
 
 interface Usuario {
     usuarioID: string;
@@ -84,7 +85,10 @@ const ListaAgendamento = () => {
         <>
             <Header />
             <main className={styles.main}>
-                <form className={styles.form} onSubmit={salvarAgendamento}>
+                <div className="w-4/5 h-3/5 flex justify-center items-center">
+                    <CadastroAgendamento/>
+                </div>    
+                {/* <form className={styles.form} onSubmit={salvarAgendamento}>
                     <label htmlFor="">Tutor</label>
                     <select
                         value={usuarioSelecionado}
@@ -126,7 +130,7 @@ const ListaAgendamento = () => {
 
                     <button type="submit">Salvar</button>
 
-                </form>
+                </form> */}
             </main>
             <Lista page="listaAgendamento" />
         </>

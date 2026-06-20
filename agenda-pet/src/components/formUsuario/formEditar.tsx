@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from "../formUsuario/formUsuario.module.css"
-import { cadastrarUsuario, editarUsuario, obterUsuarioPorId } from '@/pages/api/usuarioService'
+import { cadastrarUsuario, editarUsuario} from '@/pages/api/usuarioService'
 import { useRouter } from 'next/router'
 import { useParams, useSearchParams } from 'next/navigation'
 import { listarTipoUsuarios } from '@/pages/api/tipoUsuarioService'

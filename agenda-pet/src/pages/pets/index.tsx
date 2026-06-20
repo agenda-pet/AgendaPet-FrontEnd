@@ -8,6 +8,7 @@ import { listarRaca } from "../api/racaService";
 import { listarPorte } from "../api/porteService";
 import { listarUsuarios } from "../api/usuarioService";
 import { cadastrarPets } from "../api/petService";
+import CadastrarPet from "@/components/Form/cadastrar-pet";
 
 interface Comportamento {
     comportamentoID: string;
@@ -76,7 +77,7 @@ const ListaPets = () => {
     async function listarUsuariosEmPet () {
         const listaUsuario = await listarUsuarios();
         console.log(listaUsuario);
-        setUsuarios(listaUsuario);
+        setUsuarios(listaUsuario.data);
     }
 
     async function salvarPet(e: React.FormEvent<HTMLFormElement>) {
@@ -111,7 +112,8 @@ const ListaPets = () => {
         <>
             <Header />
             <main className={styles.main}>
-                <form action="" id={styles.form} onSubmit={salvarPet}>
+                <CadastrarPet/>
+                {/* <form action="" id={styles.form} onSubmit={salvarPet}>
 
                     <label htmlFor="Dono">Tutor</label>
                     <select
@@ -169,7 +171,7 @@ const ListaPets = () => {
 
                     <button type="submit">Salvar</button>
 
-                </form>
+                </form> */}
             </main>
             <Lista page="listaPets" />
         </>

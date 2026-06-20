@@ -1,18 +1,14 @@
 import { useEffect, useState } from 'react';
-<<<<<<< HEAD
-import { useEffect, useState } from 'react';
-=======
->>>>>>> feature/listaAgendamentos
 import Card from '../card/card';
 import styles from './lista.module.css';
+import { listarUsuarios } from '@/pages/api/usuarioService';
+import { listarPets } from '@/pages/api/petService';
 import { listarAgendamentos } from '@/pages/api/agendamentoService';
-import Link from 'next/link';
 
 type ListaProps = {
     page?: string;
 };
 
-<<<<<<< HEAD
 interface Usuario {
     usuarioID: string,
     nome: string,
@@ -28,7 +24,8 @@ interface Pet {
     raca: string,
     porte: string,
     nomeDono: string
-=======
+}
+
 interface Agendamento {
     agendamentoID: string,
     dataAgendamento: string,
@@ -37,13 +34,14 @@ interface Agendamento {
     nomeRaca: string,
     nomeTutor: string,
     nomePet: string,
->>>>>>> feature/listaAgendamentos
 }
+
 
 const Lista = ({ page }: ListaProps) => {
 
-<<<<<<< HEAD
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+    const [pets, setPets] = useState<Pet[]>([]);
+    const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
 
     async function listarUsu() {
         try {
@@ -55,41 +53,34 @@ const Lista = ({ page }: ListaProps) => {
         }
     }
 
-    useEffect(() => {
-        listarUsu();
-    }, [])
-
-
-    const [pets, setPets] = useState<Pet[]>([]);
-
     async function listarPet() {
         try {
             const listarAnimal = await listarPets();
             setPets(listarAnimal);
-=======
-    const [agendamentos, setAgendamentos] = useState<Agendamento[]>([]);
+        } catch (error: any) {
+            console.log(error.message);
+        }
+    }
 
     async function listarAgenda() {
         try {
             const listarAgendamento = await listarAgendamentos();
             setAgendamentos(listarAgendamento.data);
->>>>>>> feature/listaAgendamentos
         } catch (error: any) {
             console.log(error.message);
         }
     }
 
     useEffect(() => {
-<<<<<<< HEAD
+        listarUsu();
         listarPet();
-=======
         listarAgenda();
->>>>>>> feature/listaAgendamentos
     }, [])
 
     return (
         <>
             {page === "listaAgendamento" && (
+
                 <section className={styles.section}>
                     <table className={styles.tabelaLista}>
                         <thead id={styles.thead}>
@@ -103,19 +94,8 @@ const Lista = ({ page }: ListaProps) => {
                                 <th>Editar</th>
                             </tr>
                         </thead>
+
                         <tbody id={styles.tbody}>
-<<<<<<< HEAD
-                            <Card page="listaAgendamento" />
-                            <Card page="listaAgendamento" />
-                            <Card page="listaAgendamento" />
-                            <Card page="listaAgendamento" />
-                            <Card page="listaAgendamento" />
-                            <Card page="listaAgendamento" />
-                            <Card page="listaAgendamento" />
-                            <Card page="listaAgendamento" />
-                            <Card page="listaAgendamento" />
-                            <Card page="listaAgendamento" />
-=======
                             {agendamentos?.length > 0 ? agendamentos.map((agendamento) => (
                                 <Card
                                     key={agendamento.agendamentoID}
@@ -127,15 +107,13 @@ const Lista = ({ page }: ListaProps) => {
                                     <td colSpan={7}>Nenhum agendamento encontrado</td>
                                 </tr>
                             )}
->>>>>>> feature/listaAgendamentos
                         </tbody>
                     </table>
                 </section>
             )}
 
-<<<<<<< HEAD
             {page === "listaPets" && (
-                  <section className={styles.section}>
+                <section className={styles.section}>
                     <table className={styles.tabelaLista}>
                         <thead id={styles.thead}>
                             <tr>
@@ -153,7 +131,15 @@ const Lista = ({ page }: ListaProps) => {
                                 <Card
                                     key={pet.petID}
                                     page="listaPets"
-                                    pet={pet}
+                                    pet={{
+                                        petID: pet.petID,
+                                        nome: pet.nome,
+                                        nomeDono: pet.nomeDono,
+                                        nomeTipo: pet.tipoAnimal,
+                                        nomeComportamento: pet.comportamento,
+                                        nomeRaca: pet.raca,
+                                        nomePorte: pet.porte
+                                    }}
                                 />
                             )) : (
                                 <tr>
@@ -167,7 +153,7 @@ const Lista = ({ page }: ListaProps) => {
             )}
 
             {page === "listaUsuarios" && (
-                  <section className={styles.section}>
+                <section className={styles.section}>
                     <table className={styles.tabelaLista}>
                         <thead id={styles.thead}>
                             <tr>
@@ -195,9 +181,6 @@ const Lista = ({ page }: ListaProps) => {
                     </table>
                 </section>
             )}
-=======
-          
->>>>>>> feature/listaAgendamentos
         </>
     )
 }
