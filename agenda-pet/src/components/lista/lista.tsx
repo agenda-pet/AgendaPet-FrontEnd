@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import Card from '../card/card';
 import styles from './lista.module.css';
 import { listarUsuarios } from '@/pages/api/usuarioService';
-import { listarPets } from '@/pages/api/petService';
+import { listarPets, ListarPetsPorTutor } from '@/pages/api/petService';
 import { listarAgendamentos } from '@/pages/api/agendamentoService';
 
 type ListaProps = {
     page?: string;
+    usuarioId?: string;
 };
 
 interface Usuario {
@@ -37,7 +38,7 @@ interface Agendamento {
 }
 
 
-const Lista = ({ page }: ListaProps) => {
+const Lista = ({ page, usuarioId }: ListaProps) => {
 
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
     const [pets, setPets] = useState<Pet[]>([]);
@@ -53,10 +54,16 @@ const Lista = ({ page }: ListaProps) => {
         }
     }
 
-    async function listarPet() {
+
+    async function carregarPets() {
         try {
-            const listarAnimal = await listarPets();
-            setPets(listarAnimal);
+            if (usuarioId) {
+                const dadosPetsTutor = await ListarPetsPorTutor(usuarioId);
+                setPets(dadosPetsTutor);
+            } else {
+                const listarAnimal = await listarPets();
+                setPets(listarAnimal);
+            }
         } catch (error: any) {
             console.log(error.message);
         }
@@ -73,9 +80,17 @@ const Lista = ({ page }: ListaProps) => {
 
     useEffect(() => {
         listarUsu();
-        listarPet();
+        if (page === "listaPets") {
+            carregarPets();
+        }
         listarAgenda();
-    }, [])
+
+        window.addEventListener("pet-cadastrado", carregarPets);
+
+        return () => {
+            window.removeEventListener("pet-cadastrado", carregarPets);
+        };
+    }, [page, usuarioId])
 
     return (
         <>
@@ -127,7 +142,7 @@ const Lista = ({ page }: ListaProps) => {
                         </thead>
 
                         <tbody id={styles.tbody}>
-                            {pets.length > 0 ? pets.map((pet) => (
+                            {pets.length > 0 ? pets.map((pet: any) => (
                                 <Card
                                     key={pet.petID}
                                     page="listaPets"
@@ -135,10 +150,10 @@ const Lista = ({ page }: ListaProps) => {
                                         petID: pet.petID,
                                         nome: pet.nome,
                                         nomeDono: pet.nomeDono,
-                                        nomeTipo: pet.tipoAnimal,
-                                        nomeComportamento: pet.comportamento,
-                                        nomeRaca: pet.raca,
-                                        nomePorte: pet.porte
+                                        nomeTipo: pet.nomeTipo,
+                                        nomeComportamento: pet.nomeComportamento,
+                                        nomeRaca: pet.nomeRaca,
+                                        nomePorte: pet.nomePorte
                                     }}
                                 />
                             )) : (

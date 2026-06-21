@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import secureLocalStorage from "react-secure-storage";
 import styles from "./login.module.css";
 import { erro, notificacao } from "@/utils/toast";
 import { login } from "../api/authService";
@@ -25,7 +24,7 @@ const Login = () => {
 
             notificacao("Login bem sucedido!")
 
-            router.push("/home");
+            router.push("/agendamentos");
         } catch (error: any) {
             erro(error.message);
         }

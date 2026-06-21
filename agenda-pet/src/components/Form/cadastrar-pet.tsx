@@ -3,6 +3,7 @@ import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormSelect from "./formSelect";
+import FormInput from "./FormInput";
 import { listarTipoAnimal } from "@/pages/api/tipoAnimalService";
 import { listarRaca } from "@/pages/api/racaService";
 import { listarPorte } from "@/pages/api/porteService";
@@ -92,107 +93,113 @@ const CadastrarPet = () => {
 
             await cadastrarPets(dados);
             alert("Pet cadastrado com sucesso");
+            window.dispatchEvent(new Event("pet-cadastrado"));
         } catch (error: any) {
             alert(error.message);
         }
     }
 
-    useEffect (() => {
-            listarTipoAnimalEmPet();
-            listarRacaEmPet();
-            listarPorteEmPet();
-            listarComportamentoEmPet();
-            listarUsuariosEmPet();
-        }, [])
+    useEffect(() => {
+        listarTipoAnimalEmPet();
+        listarRacaEmPet();
+        listarPorteEmPet();
+        listarComportamentoEmPet();
+        listarUsuariosEmPet();
+    }, [])
 
     return (
         <>
-            <div className="w-4/5 h-4/5 bg-[#E5D7BB] rounded-3xl  flex flex-col justify-center items-center ">
-                {/* <h2 className="">{telaEditar? "Editar:" : Cadastrar:}</h2> */}
-                <form onSubmit={salvarPet} className="w-4/5 h-1/2 flex flex-col items-center justify-between">
-                    <div className="w-full h-1/2 flex items-center ">
-                        <div className="flex-1 h-3/4 flex flex-col justify-end mr-[16px]">
-                            <div className="relative h-4/5">
-                                <FormSelect
+            <div className="w-4/5 h-4/5 !m-6 bg-[#E5D7BB] rounded-3xl  flex flex-col shadow-[inset_4px_4px_15px_0px_rgba(0,0,0,0.4)] justify-center items-center ">
+                <h2 className="text-4xl text-start !mb-8 text-[#163923]"> Cadastrar:</h2>
+                <form onSubmit={salvarPet} className="w-4/5 !p-9 flex flex-col gap-6 items-center">
+                    <div className="w-full flex items-start">
+                        <div className="flex-1 !mr-[16px]">
+                            <FormSelect
                                 label="Tutor:"
                                 value={usuarioSelecionado}
                                 onValueChange={setUsuarioSelecionado}
                                 placeholder=""
                                 opcoes={usuarios?.map((u) => ({
-                                    valor: String(u.usuarioID), // O ID vira o valor (garantindo que seja string)
-                                    rotulo: u.nome,             // O nome vira o rótulo visível
-                                }))} />
-                            </div>
+                                    valor: String(u.usuarioID),
+                                    rotulo: u.nome,
+                                }))}
+                            />
                         </div>
 
-                        {/* Componente de Pets Reutilizável */}
-                        <div className="flex-1 h-3/4 flex flex-col justify-end mr-[16px]">
-                            <label htmlFor="" className="mb-1">Nome do Pet:</label>
-                            <div className="relative h-4/5">
-                                <Input
-                                    type="text"
-                                    value={nomePet}
-                                    onChange={(e) => setNomePet(e.target.value)}
-                                    placeholder=""
-                                    className="w-full h-[58] bg-[#f1ebd9] p-[16] border-2 border-[#FFA800] text-zinc-900 rounded-xl px-4 shadow-sm transition-all text-base focus-visible:ring-1 focus-visible:ring-amber-500"
-                                />
-                            </div>
+                        <div className="flex-1 !mr-[16px]">
+                            <FormInput
+                                label="Nome do Pet:"
+                                type="text"
+                                value={nomePet}
+                                onChange={(e) => setNomePet(e.target.value)}
+                                placeholder=""
+                            />
                         </div>
-                        {/* Componente de Hora Reutilizável */}
-                        <div className="flex-1 h-3/4">
+
+                        <div className="flex-1">
                             <FormSelect
                                 label="Comportamento:"
                                 value={comportamentoSelecionado}
                                 onValueChange={setComportamentoSelecionado}
                                 placeholder=""
                                 opcoes={comportamentos?.map((c) => ({
-                                    valor: String(c.comportamentoID), // O ID vira o valor (garantindo que seja string)
-                                    rotulo: c.nomeComportamento,             // O nome vira o rótulo visível
-                                }))} />
-
+                                    valor: String(c.comportamentoID),
+                                    rotulo: c.nomeComportamento,
+                                }))}
+                            />
                         </div>
                     </div>
 
-                    <div className="w-4/5 h-1/2 flex items-end ">
-                        <div className="flex-1 h-3/4 mr-[16]">
+                    {/* SEGUNDA LINHA: Porte, Tipo do Animal, Raça */}
+                    <div className="w-full flex items-start">
+                        <div className="flex-1 !mr-[16px]">
                             <FormSelect
                                 label="Porte:"
                                 value={porteSelecionado}
                                 onValueChange={setPorteSelecionado}
                                 placeholder=""
                                 opcoes={portes?.map((p) => ({
-                                    valor: String(p.porteID), // O ID vira o valor (garantindo que seja string)
-                                    rotulo: p.nomePorte,             // O nome vira o rótulo visível
-                                }))} />
+                                    valor: String(p.porteID),
+                                    rotulo: p.nomePorte,
+                                }))}
+                            />
                         </div>
 
-                        <div className="flex-1 h-3/4 mr-[16]">
+                        <div className="flex-1 !mr-[16px]">
                             <FormSelect
                                 label="Tipo do Animal:"
                                 value={tipoAnimalSelecionado}
                                 onValueChange={setTipoAnimalSelecionado}
                                 placeholder=""
                                 opcoes={tiposAnimal?.map((ta) => ({
-                                    valor: String(ta.tipoAnimalID), // O ID vira o valor (garantindo que seja string)
-                                    rotulo: ta.nomeTipo,             // O nome vira o rótulo visível
-                                }))} />
+                                    valor: String(ta.tipoAnimalID),
+                                    rotulo: ta.nomeTipo,
+                                }))}
+                            />
                         </div>
 
-                        <div className="flex-1 h-3/4">
+                        <div className="flex-1">
                             <FormSelect
                                 label="Raça:"
                                 value={racaSelecionado}
                                 onValueChange={setRacaSelecionado}
                                 placeholder=""
                                 opcoes={racas?.map((ra) => ({
-                                    valor: String(ra.racaID), // O ID vira o valor (garantindo que seja string)
-                                    rotulo: ra.nomeRaca,             // O nome vira o rótulo visível
-                                }))} />
+                                    valor: String(ra.racaID),
+                                    rotulo: ra.nomeRaca,
+                                }))}
+                            />
                         </div>
                     </div>
-                    <div className="w-1/3 mt-[16px]">
-                        <Button type="submit" className="w-full h-[58px] bg-[#163923] text-[#FFA800] rounded-2xl shadow-md mt-4"
-                        >Salvar</Button>
+
+                    {/* BOTÃO DE SALVAR */}
+                    <div className="w-1/3 mt-2">
+                        <Button
+                            type="submit"
+                            className="w-full h-[58px] bg-[#163923] text-[#FFA800] hover:bg-[#1f4d30] rounded-2xl shadow-md font-medium text-lg transition-colors"
+                        >
+                            Salvar
+                        </Button>
                     </div>
                 </form>
             </div>

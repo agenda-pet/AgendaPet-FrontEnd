@@ -1,9 +1,8 @@
 import Header from "@/components/header/header";
-import Lista from "@/components/lista/lista";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { listarAgendamentosPorId } from "../api/agendamentoService";
-import styles from"@/pages/detalhes/detalhes.module.css"
+import styles from "./detalhes.module.css";
 import Link from "next/link";
 import Card from "@/components/card/card";
 

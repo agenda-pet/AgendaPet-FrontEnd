@@ -5,6 +5,7 @@ import { use, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { cadastrarUsuario } from "../api/usuarioService";
 import { listarTipoUsuarios } from "../api/tipoUsuarioService";
+import CadastrarTutor from "@/components/Form/cadastrar-tutor";
 
 interface TipoUsuario {
     tipoUsuarioID: string;
@@ -23,8 +24,8 @@ const Usuarios = () => {
 
     async function listarTipoUsuarioEmUsuario() {
         const listaTipoUsuarios = await listarTipoUsuarios();
-        console.log(listaTipoUsuarios.data);
-        setTipoUsuarios(listaTipoUsuarios.data);
+        console.log(listaTipoUsuarios);
+        setTipoUsuarios(listaTipoUsuarios);
     }
 
     async function salvarUsuario(e: React.FormEvent<HTMLFormElement>) {
@@ -58,34 +59,12 @@ const Usuarios = () => {
         <>
             <Header />
             <main className={styles.main}>
-                <form className={styles.form} onSubmit={salvarUsuario}>
-                    <label htmlFor="nome">Nome:</label>
-                    <input value={nome} onChange={(e) => setNome(e.target.value)} />
-
-                    <label htmlFor="email">Email:</label>
-                    <input value={email} onChange={(e) => setEmail(e.target.value)} />
-
-                    <label htmlFor="telefone">Telefone:</label>
-                    <input value={numeroTelefone} onChange={(e) => setNumeroTelefone(e.target.value)} />
-
-                    <label htmlFor="tipoUsuario">TipoUsuario:</label>
-                    <select 
-                        value={tipoUsuarioSelecionado}
-                        onChange={(e) => setTipoUsuarioSelecionado(e.target.value)}
-                    >
-                        {tipoUsuarios.map((item)=> (
-                            <option value={item.tipoUsuarioID}>{item.nomeTipo}</option>
-                        ))}
-                    </select>
-
-                    <label htmlFor="senha">Senha:</label>
-                    <input value={senha} onChange={(e) => setSenha(e.target.value)} />
-
-                    <button type="submit" >Salvar</button>
-                </form>
+                <div className="w-4/5 h-4/5 flex justify-center items-center !m-10">
+                    <CadastrarTutor />
+                </div>
+                <Lista page="listaUsuarios" />
             </main>
 
-            <Lista page="listaUsuarios" />
         </>
     )
 }

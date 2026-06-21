@@ -1,7 +1,6 @@
 import Header from "@/components/header/header"
-import styles from "@/pages/detalhes/detalhe.module.css"
+import styles from "./detalhes.module.css";
 import Link from "next/link"
-import Usuarios from "../usuarios"
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import { listarUsuariosPorId } from "../api/usuarioService"
@@ -24,8 +23,8 @@ const DetalhesUsuarios = () => {
     async function listarUsuario() {
         try {
             const response = await listarUsuariosPorId(String(id));
-            console.log(response.data);
-            setUsuario(response.data);
+            console.log(response);
+            setUsuario(response);
         } catch (error: any) {
             console.log(error.message)
         }
@@ -64,10 +63,10 @@ const DetalhesUsuarios = () => {
                             </div>
                         </div>
 
-                        <h3 className={styles.subTituloSecao}>Histórico:</h3>
+                        <h3 className={styles.subTituloSecao}>Pets:</h3>
 
                         <div className={styles.historicoLista}>
-                            <Lista page="listaUsuarios"/>
+                            {id && <Lista page="listaPets" usuarioId={String(id)} />}
                         </div>
                     </div>
                 </section>

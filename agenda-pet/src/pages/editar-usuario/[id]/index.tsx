@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import styles from '@/pages/editar-usuario/[id]/editar.module.css'
+import styles from "./detalhes.module.css";
 import Header from '@/components/header/header'
 import FormUsuario from '@/components/formUsuario/formEditar'
 import { useRouter } from 'next/router'
-import { obterUsuarioPorId } from '@/pages/api/usuarioService'
+import { listarUsuariosPorId } from '@/pages/api/usuarioService'
 import { listarTipoUsuarios } from '@/pages/api/tipoUsuarioService'
 
 interface UsuarioRecebido {
@@ -32,7 +32,7 @@ const index = () => {
   }, [router.isReady]);
 
   async function lerUsuario() {
-    const tipos = await obterUsuarioPorId(String(id));
+    const tipos = await listarUsuariosPorId(String(id));
     setUsuarioBuscado(tipos);
   }
 

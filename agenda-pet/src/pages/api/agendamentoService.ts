@@ -3,9 +3,9 @@ import { api } from "./api";
 type AgendamentoFormulario = {
     dataAgendamento: string;
     horaAgendamento: string;
-    funcionarioID: string;
+    statusAgendamentoID: string; 
     petID: string;
-    servicosIds: string[];
+    servicosIds: string[]; 
 }
 
 
@@ -32,19 +32,13 @@ export async function listarAgendamentosPorId(id: string) {
 
 export async function cadastrarAgendamento(agendamento: AgendamentoFormulario) {
     try {
-        await api.post("Agendamento", {
-            dataAgendamento: agendamento.dataAgendamento,
-            horaAgendamento: agendamento.horaAgendamento,
-            funcionarioID: agendamento.funcionarioID,
-            petID: agendamento.petID,
-            servicoIds: agendamento.servicosIds.forEach(servico => servico.toString)
-        });
 
+        await api.post("Agendamento", agendamento);
     } catch (error: any) {
         throw new Error(
-            error.response?.data?.title ||
-            error.response?.data ||
-            error.message ||
-            "Erro ao cadastrar jogo")
+            error.response?.data || 
+            error.message || 
+            "Erro interno ao processar agendamento"
+        );
     }
 }

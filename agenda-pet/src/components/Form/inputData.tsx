@@ -28,7 +28,7 @@ const InputData = ({ label = "Data:", value, onChange }: CampoDataProps) => {
             <Button
               variant={"outline"}
               className={cn(
-                "w-full justify-between p-[16] bg-[#f1ebd9] h-[58] hover:bg-[#e7dec3] text-zinc-900 border-2 border-[#FFA800] rounded-xl px-4 font-normal text-left transition-colors data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed",
+                "w-full justify-between p-[16] bg-[#f1ebd9] h-[58] hover:bg-[#e7dec3] text-zinc-900 border-2 !border-[#FFA800] rounded-xl !p-4 font-normal text-left transition-colors data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed",
                 !value && "text-zinc-500"
               )}
             >
@@ -41,7 +41,7 @@ const InputData = ({ label = "Data:", value, onChange }: CampoDataProps) => {
           </PopoverTrigger>
           <PopoverContent
             align="start"
-            className="w-auto p-0 bg-[#f8f4e8] border border-amber-500/30 rounded-xl shadow-lg"
+            className="w-auto p-0 bg-[#e7dec3] border !border-[#FFA800] rounded-xl shadow-lg"
           >
             <Calendar
               mode="single"

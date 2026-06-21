@@ -32,19 +32,18 @@ const FormSelect = ({
   icone,
 }: FormSelectProps) => {
   return (
-    // Definimos a div principal para se comportar como coluna e empurrar o select para a base
-    <div className="flex flex-col justify-end w-full h-14">
+    <div className="flex flex-col w-full">
       <label className="text-sm font-medium text-zinc-800 font-sans mb-1">
         {label}
       </label>
       <Select value={value} onValueChange={onValueChange} disabled={disabled}>
-        <SelectTrigger className="w-full p-[16] h-[58] justify-between bg-[#f1ebd9] hover:bg-[#e7dec3] text-zinc-900 border-2 border-[#FFA800] rounded-xl px-4 shadow-sm font-normal text-left transition-colors data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed">
-          <span className="flex items-center gap-2">
+        {/* CORRIGIDO: h-[58px] e removido o p-4 que jogava o texto para baixo */}
+        <SelectTrigger className="w-full !h-[58px] justify-between bg-[#f1ebd9] hover:bg-[#e7dec3] text-zinc-900 border-2 border-[#FFA800] rounded-xl !p-4 shadow-sm font-normal text-left transition-colors data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed">
+          <span className="flex items-center gap-2 ">
             {icone}
             {value ? <SelectValue /> : placeholder}
           </span>
         </SelectTrigger>
-
         <SelectContent
           position="popper"
           sideOffset={4}

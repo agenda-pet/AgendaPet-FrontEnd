@@ -1,3 +1,4 @@
+import Link from "next/link";
 import styles from "./header.module.css"
 
 const Header = () => {
@@ -6,10 +7,10 @@ const Header = () => {
             <div className={styles.container}>
                 <img src="../imgs/LogoAgendaPet.png" alt="Logo Agenda Pet" id={styles.Logo} />
                 <nav className={styles.nav_bar}>
-                    <a href="">Agendamento</a>
-                    <a href="">Histórico</a>
-                    <a href="">Pets</a>
-                    <a href="">Usuários</a>
+                    <Link href="/agendamentos">Agendamento</Link>
+                    <Link href="/">Histórico</Link>
+                    <Link href="/pets">Pets</Link>
+                    <Link href="/usuarios">Usuários</Link>
                 </nav>
                 <div id={styles.info_header}>
                     <div id={styles.icone}>
