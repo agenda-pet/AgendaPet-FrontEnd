@@ -1,3 +1,4 @@
+import { StagedRenderingController } from "next/dist/server/app-render/staged-rendering";
 import { api } from "./api";
 
 type PetFormulario = {
@@ -15,6 +16,16 @@ type FormPetAtualizar = {
     porteID: string,
     usuarioID: string
 }
+interface PetRecebido {
+    petID: string,
+    nome: string,
+    nomeTipo: string,
+    nomeComportamento: string,
+    nomeRaca: string,
+    nomePorte: string,
+    nomeDono: string,
+    agendamentos: []
+}
 
 export async function listarPets() {
     try {
@@ -31,6 +42,17 @@ export async function obterPetPorID(id: string) {
     try {
         const response = await api.get("Pet/" + id);
         return response.data;
+    }
+    catch (error: any) {
+        throw new Error(error.response.data)
+    }
+}
+
+export async function ListarPetsPorTutor(tutorId: string) {
+    try {
+        const response = await api.get("Pet/TutorId/" + tutorId)
+        console.log(response.data)
+        return response.data
     } catch (error: any) {
         throw new Error(error.response.data)
     }

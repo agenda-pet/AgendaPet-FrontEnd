@@ -5,8 +5,9 @@ import { listarComportamento } from "../../api/comportamentoService";
 import { listarPorte } from "../../api/porteService";
 import { listarTipoAnimal } from "../../api/tipoAnimalService";
 import { listarRaca } from "../../api/racaService";
-import { atualizarPet, obterPetPorID } from "../../api/petService";
+
 import { useRouter } from "next/router";
+import { atualizarPet, obterPetPorID } from "@/pages/api/petService";
 
 interface ComportamentoRecebido {
   comportamentoID: string,
