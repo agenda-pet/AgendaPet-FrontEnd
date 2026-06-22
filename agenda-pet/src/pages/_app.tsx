@@ -4,7 +4,7 @@ import { Quicksand } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 
 const quicksand = Quicksand({
-  variable: "--fonte-padrao",
+  variable: "--font-quicksand",
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });

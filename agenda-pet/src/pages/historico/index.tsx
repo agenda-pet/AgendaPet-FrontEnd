@@ -6,8 +6,8 @@ const index = () => {
         <>
             <Header />
             <main className={style.main}>
-                <h1>histórico</h1>
-                <Lista page="listaHistorico"/>
+                <h1 className="text-6xl text-[#163923] !p-4 !m-8">histórico</h1>
+                <Lista page="listaHistorico" />
             </main>
         </>
     )

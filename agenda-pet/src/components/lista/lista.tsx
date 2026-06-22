@@ -115,7 +115,6 @@ const Lista = ({ page, usuarioId, agendamentoId }: ListaProps) => {
         }
     }
 
-    // 💡 ESTRUTURA CORRIGIDA: Executa apenas a busca da lista correspondente à prop 'page' atual
     useEffect(() => {
         if (!page) return;
 
@@ -155,7 +154,7 @@ const Lista = ({ page, usuarioId, agendamentoId }: ListaProps) => {
                                 <th>Serviços</th>
                                 <th>Editar</th>
                             </tr>
-                         Lucas</thead>
+                         </thead>
                         <tbody id={styles.tbody}>
                             {loading ? (
                                 <tr>
@@ -309,9 +308,9 @@ const Lista = ({ page, usuarioId, agendamentoId }: ListaProps) => {
                             <tr>
                                 <th>Data</th>
                                 <th>Horário</th>
-                                <th>Raça</th>
-                                <th>Porte</th>
+                                <th>Tutor</th>
                                 <th>Pets</th>
+                                <th>Status</th>
                                 <th>Serviços</th>
                                 <th>Preço</th>
                             </tr>

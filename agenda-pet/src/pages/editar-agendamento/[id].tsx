@@ -10,7 +10,7 @@ const index = () => {
                 <div className={style.voltarContainer}>
                     <Link href="/agendamentos" id={style.voltar}><span className={style.btnVoltar}>&larr; Voltar</span></Link>
                 </div>
-                <div className="w-4/5 h-3/5 flex justify-center items-center mb-10">
+                <div className="w-4/5 max-w-[1000px] h-3/5 flex justify-center items-center mb-10">
                     <CadastrarAgendamento />
                 </div>
             </main>

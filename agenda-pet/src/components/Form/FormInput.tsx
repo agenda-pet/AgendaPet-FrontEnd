@@ -13,7 +13,7 @@ export function FormInput({ label, className, ...props }: FormInputProps) {
       </label>
       <Input
         {...props}
-        className="w-full !h-[58px] bg-[#f1ebd9] !p-4 border-2 border-[#FFA800] text-zinc-900 rounded-xl px-4 shadow-sm transition-all text-base focus-visible:ring-1 focus-visible:ring-amber-500 focus-visible:ring-offset-0"
+        className="w-full !h-[45px] bg-[#f1ebd9] !p-4 border-2 border-[#FFA800] text-zinc-900 rounded-xl px-4 shadow-sm transition-all text-base focus-visible:ring-1 focus-visible:ring-amber-500 focus-visible:ring-offset-0"
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ChevronDown, Check, } from "lucide-react";
+import { ChevronDown, Check } from "lucide-react";
 import { listarUsuarios } from "@/pages/api/usuarioService";
 import { ListarPetsPorTutor } from "@/pages/api/petService";
 import {
@@ -12,9 +12,10 @@ import { Button } from "@/components/ui/button";
 import FormSelect from "./formSelect";
 import InputData from "./inputData";
 import { listarServicos } from "@/pages/api/servicoService";
-import { cadastrarAgendamento, listarAgendamentosPorId } from "@/pages/api/agendamentoService";
+import { cadastrarAgendamento, editarAgendamento, listarAgendamentosPorId } from "@/pages/api/agendamentoService";
 import { useParams } from "next/navigation";
 import { api } from "@/pages/api/api";
+import Router from "next/router";
 
 const listaHorarios = [
     "08:00:00", "08:30:00", "09:00:00", "09:30:00", "10:00:00", "10:30:00",
@@ -43,7 +44,6 @@ const CadastrarAgendamento = () => {
 
     const params = useParams();
     const id = params?.id as string;
-
     const isEditMode = Boolean(id);
 
     const handleMudarSelecao = (id: string) => {
@@ -52,31 +52,61 @@ const CadastrarAgendamento = () => {
         );
     };
 
-    const handleCancelar = () => {
-       
-        if (confirm("Tem certeza que deseja cancelar em definitivo este agendamento?")) {
-            api.patch(`/api/Agendamento/${id}/cancelar`)
-                .then(() => window.location.href = "/agendamentos");
-        }
-
-    };
-
-    const handleSalvar = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        if (!tutorSelecionado || !petSelecionado || !hora || !dataAgendamento || servicosSelecionados.length === 0) {
-            alert("Por favor, preencha todos os campos e selecione ao menos um serviço.");
+    const handleCancelar = async () => {
+        if (!id) {
+            alert("ID do agendamento não encontrado.");
             return;
         }
 
-        try {
+        if (confirm("Tem certeza que deseja cancelar em definitivo este agendamento?")) {
+            try {
+                await api.patch(`Agendamento/AtualizarStatusAgendamento/${id}`, {
+                    nomeStatusAgendamento: "Cancelado"
+                });
 
-            const dataFormatada = dataAgendamento.toISOString().split('T')[0];
+                alert("Agendamento cancelado com sucesso!");
+                window.location.href = "/agendamentos";
+            } catch (error: any) {
+                alert(`Erro ao cancelar: ${error.message}`);
+            }
+        }
+    };
+
+    const handleEditar = async () => {
+        try {
+            const dataFormatada = dataAgendamento instanceof Date
+                ? dataAgendamento.toISOString().split('T')[0]
+                : dataAgendamento;
 
             const payload = {
                 dataAgendamento: dataFormatada,
                 horaAgendamento: hora,
-                statusAgendamentoID: "a92942d7-8db0-4cf0-9923-fd5161999805",
+                statusAgendamentoID: "c4886279-9dda-4ace-9f7f-4aea4a76978d",
+                petID: petSelecionado,
+                servicosIds: servicosSelecionados
+            };
+
+            console.log("Editando agendamento no C#:", payload);
+
+            await editarAgendamento(id, payload);
+
+            alert("Agendamento atualizado com sucesso!");
+            Router.push('/agendamentos');
+        } catch (error: any) {
+            alert(`Falha ao atualizar agendamento: ${error.message}`);
+        }
+    };
+
+    const handleSalvar = async () => {
+        try {
+            const dataFormatada = dataAgendamento instanceof Date
+                ? dataAgendamento.toISOString().split('T')[0]
+                : "";
+
+            const payload = {
+                dataAgendamento: dataFormatada,
+                horaAgendamento: hora,
+                statusAgendamentoID: "c4886279-9dda-4ace-9f7f-4aea4a76978d", // 💡 Corrigido aqui para o ID real do banco!
                 petID: petSelecionado,
                 servicosIds: servicosSelecionados
             };
@@ -86,35 +116,47 @@ const CadastrarAgendamento = () => {
             await cadastrarAgendamento(payload);
             alert("Agendamento cadastrado com sucesso!");
 
-
             setTutorSelecionado("");
             setListaPets([]);
             setPetSelecionado("");
             setHora("");
             setDataAgendamento(undefined);
             setServicosSelecionados([]);
-
         } catch (error: any) {
             alert(`Falha ao salvar agendamento: ${error.message}`);
         }
     };
 
-    const obterTextoBotao = () => {
-        if (buscandoServicos) return "Carregando serviços...";
+    // 💡 Gerenciador central do envio do Form
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
 
-        if (!servicosSelecionados || servicosSelecionados.length === 0) {
-            return "";
+        if (!petSelecionado || !hora || !dataAgendamento || servicosSelecionados.length === 0) {
+            alert("Por favor, preencha todos os campos e selecione ao menos um serviço.");
+            return;
         }
 
-        const servicosEncontrados = listaServicos.filter((s) => {
+        if (isEditMode) {
+            handleEditar();
+        } else {
+            if (!tutorSelecionado) {
+                alert("Por favor, selecione um tutor.");
+                return;
+            }
+            handleSalvar();
+        }
+    };
 
+    const obterTextoBotao = () => {
+        if (buscandoServicos) return "Carregando serviços...";
+        if (!servicosSelecionados || servicosSelecionados.length === 0) return "";
+
+        const servicosEncontrados = listaServicos.filter((s) => {
             const atualId = String(s.servicoID || s.ServicoID || s.id || "");
             return servicosSelecionados.includes(atualId);
         });
 
-        if (servicosEncontrados.length === 0) {
-            return "";
-        }
+        if (servicosEncontrados.length === 0) return "";
         return servicosEncontrados
             .map((s) => s.nomeServico || s.Nome || s.nome || "Sem nome")
             .join(", ");
@@ -124,11 +166,7 @@ const CadastrarAgendamento = () => {
         setBuscandoServicos(true);
         try {
             const respostaAPI = await listarServicos();
-
-            const dadosTratados = Array.isArray(respostaAPI)
-                ? respostaAPI
-                : (respostaAPI?.data || []);
-
+            const dadosTratados = Array.isArray(respostaAPI) ? respostaAPI : (respostaAPI?.data || []);
             setListaServicos(dadosTratados);
         } catch (error) {
             console.error("Erro ao buscar serviços do banco:", error);
@@ -141,7 +179,6 @@ const CadastrarAgendamento = () => {
         setBuscandoTutores(true);
         try {
             const dadosTutores = await listarUsuarios();
-            // Garante que seja um array (ajuste conforme o retorno da sua API: dadosTutores ou dadosTutores.data)
             setListaTutores(Array.isArray(dadosTutores) ? dadosTutores : dadosTutores.data || []);
         } catch (error) {
             console.error("Erro ao carregar tutores:", error);
@@ -150,86 +187,41 @@ const CadastrarAgendamento = () => {
         }
     }
 
-    async function buscarPetsDoTutor() {
+    async function buscarPetsDoTutor(tutorId: string) {
         setBuscandoPets(true);
         try {
-            const dadosPets = await ListarPetsPorTutor(tutorSelecionado);
+            const dadosPets = await ListarPetsPorTutor(tutorId);
             const petsFiltrados = Array.isArray(dadosPets) ? dadosPets : [];
             setListaPets(petsFiltrados);
-
-            // Auto-seleciona o primeiro pet se houver, usando a chave correta do banco (PetID)
-            if (petsFiltrados.length > 0) {
-                setPetSelecionado(String(petsFiltrados[0].PetID || petsFiltrados[0].petId));
-            } else {
-                setPetSelecionado("");
-            }
         } catch (error) {
             console.error("Erro ao buscar pets:", error);
             setListaPets([]);
-            setPetSelecionado("");
         } finally {
             setBuscandoPets(false);
         }
     }
 
-    async function carregarDadosAgendamento() {
-        try {
-            // Chama o seu service de busca por ID
-            const resposta = await listarAgendamentosPorId(id);
-            const dados = resposta.data || resposta;
-
-            // Preenche os estados com o que veio do banco
-            setTutorSelecionado(String(dados.tutorID));
-            setPetSelecionado(String(dados.petID));
-            setHora(dados.horaAgendamento);
-            setDataAgendamento(dados.dataAgendamento);
-
-            // Caso sua API retorne os IDs dos serviços atrelados
-            if (dados.servicosIds) {
-                setServicosSelecionados(dados.servicosIds.map(String));
-            }
-        } catch (error) {
-            console.error("Erro ao carregar dados para edição:", error);
-        }
-    }
-
-    useEffect(() => {
-        if (!isEditMode || !id) return;
-        carregarDadosAgendamento();
-    }, [id, isEditMode]);
-
-    useEffect(() => {
-        carregarTutoresIniciais();
-        carregarServicosDoBanco();
-    }, []);
-
-    // 2. Monitora quando o tutor muda para buscar os pets dele de forma automática
-    useEffect(() => {
-        if (!tutorSelecionado) {
-            setListaPets([]);
-            setPetSelecionado("");
-            return;
-        }
-
-        buscarPetsDoTutor();
-    }, [tutorSelecionado]);
-
+    // 💡 Carrega os dados antigos se for Edição
     useEffect(() => {
         if (!isEditMode || !id) return;
 
         async function carregarDadosAgendamento() {
             try {
-                // Chama o seu service de busca por ID
                 const resposta = await listarAgendamentosPorId(id);
                 const dados = resposta.data || resposta;
 
-                // Preenche os estados com o que veio do banco
-                setTutorSelecionado(String(dados.tutorID));
-                setPetSelecionado(String(dados.petID));
+                setTutorSelecionado(String(dados.tutorID || ""));
+                setPetSelecionado(String(dados.petID || ""));
                 setHora(dados.horaAgendamento);
-                setDataAgendamento(dados.dataAgendamento);
 
-                // Caso sua API retorne os IDs dos serviços atrelados
+                // Transforma a string de data "YYYY-MM-DD" em Objeto Date para o input funcionar
+                if (dados.dataAgendamento) {
+                    const partesData = dados.dataAgendamento.split('-');
+                    if (partesData.length === 3) {
+                        setDataAgendamento(new Date(Number(partesData[0]), Number(partesData[1]) - 1, Number(partesData[2])));
+                    }
+                }
+
                 if (dados.servicosIds) {
                     setServicosSelecionados(dados.servicosIds.map(String));
                 }
@@ -241,22 +233,36 @@ const CadastrarAgendamento = () => {
         carregarDadosAgendamento();
     }, [id, isEditMode]);
 
+    useEffect(() => {
+        carregarTutoresIniciais();
+        carregarServicosDoBanco();
+    }, []);
+
+    // Monitora quando o tutor muda
+    useEffect(() => {
+        if (!tutorSelecionado) {
+            setListaPets([]);
+            return;
+        }
+        buscarPetsDoTutor(tutorSelecionado);
+    }, [tutorSelecionado]);
 
     return (
         <>
-            <div className="w-4/5 h-4/5 bg-[#E5D7BB] rounded-3xl flex flex-col justify-center items-center !p-8 shadow-[inset_4px_4px_15px_0px_rgba(0,0,0,0.4)]">
-                {/* 1. TÍTULO DINÂMICO */}
-                <h2 className="text-4xl text-start !mb-8 text-[#163923]">
+            <div className=" !max-w-[700px] w-4/5 !p-8 bg-[#E5D7BB] rounded-3xl flex flex-col justify-center items-center shadow-[inset_4px_4px_15px_0px_rgba(0,0,0,0.4)]">
+                <h2 className="text-4xl text-start text-[#163923] mb-4">
                     {isEditMode ? "Editar:" : "Cadastrar:"}
                 </h2>
 
-                <form onSubmit={handleSalvar} className="w-4/5 h-1/2 flex flex-col items-center justify-between">
+                {/* 💡 Atualizado para handleSubmit dinâmico */}
+                <form onSubmit={handleSubmit} className="w-4/5 h-1/2 flex flex-col items-center justify-between">
                     <div className="w-full h-1/2 flex items-center ">
                         <div className="flex-1 h-3/4 !mr-[16px]">
                             <FormSelect
                                 label="Tutor:"
                                 value={tutorSelecionado}
                                 onValueChange={setTutorSelecionado}
+                                disabled={isEditMode} // Trava alteração de tutor na edição se necessário
                                 placeholder={buscandoTutores ? "Carregando tutores..." : ""}
                                 opcoes={listaTutores.map((t) => ({
                                     valor: String(t.UsuarioID || t.usuarioID || t.id),
@@ -265,7 +271,6 @@ const CadastrarAgendamento = () => {
                             />
                         </div>
 
-                        {/* Componente de Pets Reutilizável */}
                         <div className="flex-1 h-3/4 !mr-[16px]">
                             <FormSelect
                                 label="Pets:"
@@ -289,7 +294,7 @@ const CadastrarAgendamento = () => {
                                 }))}
                             />
                         </div>
-                        {/* Componente de Hora Reutilizável */}
+
                         <div className="flex-1 h-3/4">
                             <FormSelect
                                 label="Hora:"
@@ -315,7 +320,7 @@ const CadastrarAgendamento = () => {
                                     <Button
                                         variant="outline"
                                         disabled={buscandoServicos}
-                                        className="w-full h-[58px] justify-between bg-[#f1ebd9] hover:bg-[#e7dec3] text-zinc-900 border-2 !border-[#FFA800] rounded-xl !px-4 shadow-sm font-normal text-left transition-colors data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed"
+                                        className="w-full h-[47px] justify-between bg-[#f1ebd9] hover:bg-[#e7dec3] text-zinc-900 border-2 !border-[#FFA800] rounded-xl !px-4 shadow-sm font-normal text-left transition-colors data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed"
                                     >
                                         <span className="truncate">{obterTextoBotao()}</span>
                                         <ChevronDown className="h-4 w-4 opacity-80 shrink-0" />
@@ -328,7 +333,6 @@ const CadastrarAgendamento = () => {
                                     {listaServicos.map((servico: any) => {
                                         const servicoId = String(servico.servicoID || servico.ServicoID || servico.id || "");
                                         const servicoNome = String(servico.nomeServico || servico.Nome || servico.nome || "Sem nome");
-
                                         const estaSelecionado = servicosSelecionados.includes(servicoId);
 
                                         return (
@@ -339,8 +343,7 @@ const CadastrarAgendamento = () => {
                                             >
                                                 <span>{servicoNome}</span>
                                                 <div
-                                                    className={`w-4 h-4 border rounded flex items-center justify-center transition-all ${estaSelecionado ? "bg-[#1b3d2f] border-[#1b3d2f] text-white" : "border-zinc-400 bg-white"
-                                                        }`}
+                                                    className={`w-4 h-4 border rounded flex items-center justify-center transition-all ${estaSelecionado ? "bg-[#1b3d2f] border-[#1b3d2f] text-white" : "border-zinc-400 bg-white"}`}
                                                 >
                                                     {estaSelecionado && <Check className="h-3 w-3 stroke-[3]" />}
                                                 </div>
@@ -364,7 +367,7 @@ const CadastrarAgendamento = () => {
                         )}
                         <Button
                             type="submit"
-                            className="w-full h-[52px] bg-[#163923] text-[#FFA800] rounded-2xl shadow-md hover:bg-[#0F2818] transition-colors font-semibold"
+                            className="w-full !h-[58px] bg-[#163923] text-[#FFA800] rounded-2xl shadow-md hover:bg-[#0F2818] transition-colors font-semibold"
                         >
                             Salvar
                         </Button>

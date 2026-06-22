@@ -43,6 +43,10 @@ export async function cadastrarAgendamento(agendamento: AgendamentoFormulario) {
     }
 }
 
+export async function editarAgendamento(id: string, dados: any) {
+    return await api.put(`Agendamento/${id}`, dados);
+}
+
 export async function listarLogsPorAgendamentoID(agendamentoId: string) {
     try {
         // Faz a chamada para o endpoint de logs

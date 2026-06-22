@@ -57,6 +57,7 @@ interface Agendamento {
     nomeRaca: string,
     nomePet: string,
     nomeTutor: string,
+    nomeStatus: string,
     valorTotal?: number,
 }
 
@@ -98,17 +99,24 @@ const Card = ({ page, usuario, pet, agendamento, log }: CardProps) => {
                 <tr
                     className={styles.trCard}
                     onClick={() => Router.push(`/detalhes-agendamento/${agendamento?.agendamentoID}`)}
-                    style={{ cursor: 'pointer' }} // Deixa o ponteiro do mouse como "mãozinha" em qualquer lugar da linha
+                    style={{ cursor: 'pointer' }}
                 >
                     <td>{agendamento?.dataAgendamento}</td>
                     <td>{agendamento?.horaAgendamento}</td>
                     <td>{agendamento?.nomePet}</td>
                     <td>{agendamento?.nomePorte}</td>
                     <td>{agendamento?.nomeTutor}</td>
-                    <td id={styles.dropdown_wrapper}>
-                        {/* Passando o estado com a string tratada para o seu dropdown personalizado */}
+
+                    {/* 💡 CORREÇÃO AQUI: Adicionamos o onClick na td do Dropdown para travar a bolha do clique */}
+                    <td
+                        id={styles.dropdown_wrapper}
+                        onClick={(e) => {
+                            e.stopPropagation(); // ✋ Interrompe o clique aqui e impede de disparar o Router da tr!
+                        }}
+                    >
                         <ServicosDropdown servicosString={servicosDoAgendamento} />
                     </td>
+
                     <td className="w-12 text-center">
                         <button
                             type="button"
@@ -141,10 +149,15 @@ const Card = ({ page, usuario, pet, agendamento, log }: CardProps) => {
                 >
                     <td>{agendamento?.dataAgendamento}</td>
                     <td>{agendamento?.horaAgendamento}</td>
-                    <td>{agendamento?.nomePet}</td>
-                    <td>{agendamento?.nomePorte}</td>
                     <td>{agendamento?.nomeTutor}</td>
-                    <td id={styles.dropdown_wrapper}>
+                    <td>{agendamento?.nomePet}</td>
+                    <td>{agendamento?.nomeStatus}</td>
+                    <td
+                        id={styles.dropdown_wrapper}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                        }}
+                    >
                         <ServicosDropdown servicosString={servicosDoAgendamento} />
                     </td>
                     {/* Exibe o preço formatado em vez do botão de edição */}

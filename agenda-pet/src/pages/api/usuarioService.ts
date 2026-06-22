@@ -57,7 +57,7 @@ export async function editarUsuario(id: string, usuario: EditarUsuarioForm) {
     try {
         console.log(usuario);
         console.log(JSON.stringify(usuario, null, 2));
-        await api.patch(`Usuario/${id}`, usuario);
+        await api.patch(`Usuario/Atualizar/${id}`, usuario);
 
     } catch (error: any) {
         if (error.response) {
