@@ -1,5 +1,4 @@
-import { useState, FocusEvent, useEffect } from "react";
-import { Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import FormSelect from "./formSelect";
@@ -74,7 +73,7 @@ const CadastrarTutor = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder=""
-                                className="w-full h-[58px] bg-[#f1ebd9] border-2 border-[#FFA800] text-zinc-900 rounded-xl px-4 shadow-sm transition-all text-base focus-visible:ring-1 focus-visible:ring-amber-500"
+                                className="w-full h-[58px] !p-4 bg-[#f1ebd9] border-2 border-[#FFA800] text-zinc-900 rounded-xl px-4 shadow-sm transition-all text-base focus-visible:ring-1 focus-visible:ring-amber-500"
                             />
                         </div>
                     </div>
@@ -102,7 +101,7 @@ const CadastrarTutor = () => {
                                 value={numeroTelefone}
                                 onChange={(e) => setNumeroTelefone(e.target.value)}
                                 placeholder=""
-                                className="w-full h-[58px] bg-[#f1ebd9] border-2 border-[#FFA800] text-zinc-900 rounded-xl px-4 shadow-sm transition-all text-base focus-visible:ring-1 focus-visible:ring-amber-500"
+                                className="w-full h-[58px] !p-4 bg-[#f1ebd9] border-2 border-[#FFA800] text-zinc-900 rounded-xl px-4 shadow-sm transition-all text-base focus-visible:ring-1 focus-visible:ring-amber-500"
                             />
                         </div>
                     </div>

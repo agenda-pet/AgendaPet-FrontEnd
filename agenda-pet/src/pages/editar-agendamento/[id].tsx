@@ -1,18 +1,17 @@
 import CadastrarAgendamento from "@/components/Form/cadastrar-agendamento"
 import Header from "@/components/header/header"
-import style from "./editar.module.css"
+import style from "./editar-agendamento.module.css"
 import Link from "next/link"
-import CadastrarTutor from "@/components/Form/cadastrar-tutor"
 const index = () => {
     return (
         <>
             <Header />
             <main className={style.main}>
                 <div className={style.voltarContainer}>
-                    <Link href="/usuarios" id={style.voltar}><span className={style.btnVoltar}>&larr; Voltar</span></Link>
+                    <Link href="/agendamentos" id={style.voltar}><span className={style.btnVoltar}>&larr; Voltar</span></Link>
                 </div>
                 <div className="w-4/5 h-3/5 flex justify-center items-center mb-10">
-                    <CadastrarTutor />
+                    <CadastrarAgendamento />
                 </div>
             </main>
         </>

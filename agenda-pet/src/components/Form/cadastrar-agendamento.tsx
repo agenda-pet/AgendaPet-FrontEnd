@@ -1,6 +1,5 @@
-import React, { useState, FocusEvent, useEffect } from "react";
-import { Clock, ChevronDown, Check, Loader2 } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import React, { useState, useEffect } from "react";
+import { ChevronDown, Check, } from "lucide-react";
 import { listarUsuarios } from "@/pages/api/usuarioService";
 import { ListarPetsPorTutor } from "@/pages/api/petService";
 import {
@@ -12,25 +11,10 @@ import {
 import { Button } from "@/components/ui/button";
 import FormSelect from "./formSelect";
 import InputData from "./inputData";
-import FormInput from "./FormInput";
 import { listarServicos } from "@/pages/api/servicoService";
-import { cadastrarAgendamento } from "@/pages/api/agendamentoService";
-
-interface Usuario {
-    usuarioID: string;
-    nome: string;
-}
-
-interface Pet {
-    petId: string;
-    nome: string;
-    usuarioId: string;
-}
-
-interface Servico {
-    id: string;
-    nome: string;
-}
+import { cadastrarAgendamento, listarAgendamentosPorId } from "@/pages/api/agendamentoService";
+import { useParams } from "next/navigation";
+import { api } from "@/pages/api/api";
 
 const listaHorarios = [
     "08:00:00", "08:30:00", "09:00:00", "09:30:00", "10:00:00", "10:30:00",
@@ -38,14 +22,7 @@ const listaHorarios = [
     "15:00:00", "15:30:00", "16:00:00", "16:30:00", "17:00:00", "17:30:00"
 ];
 
-const listaServicosDisponiveis: Servico[] = [
-    { id: "banho", nome: "Banho" },
-    { id: "unha", nome: "Corte de unha" },
-    { id: "tosa", nome: "Tosa" },
-    { id: "ouvido", nome: "Limpeza de ouvido" },
-];
-
-const CadastroAgendamento = () => {
+const CadastrarAgendamento = () => {
     // Listas vindas do banco
     const [listaTutores, setListaTutores] = useState<any[]>([]);
     const [listaPets, setListaPets] = useState<any[]>([]);
@@ -64,77 +41,90 @@ const CadastroAgendamento = () => {
     const [buscandoPets, setBuscandoPets] = useState<boolean>(false);
     const [buscandoServicos, setBuscandoServicos] = useState<boolean>(false);
 
+    const params = useParams();
+    const id = params?.id as string;
+
+    const isEditMode = Boolean(id);
+
     const handleMudarSelecao = (id: string) => {
         setServicosSelecionados((prev) =>
             prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
         );
     };
 
+    const handleCancelar = () => {
+       
+        if (confirm("Tem certeza que deseja cancelar em definitivo este agendamento?")) {
+            api.patch(`/api/Agendamento/${id}/cancelar`)
+                .then(() => window.location.href = "/agendamentos");
+        }
+
+    };
+
     const handleSalvar = async (e: React.FormEvent) => {
-    e.preventDefault();
+        e.preventDefault();
 
-    if (!tutorSelecionado || !petSelecionado || !hora || !dataAgendamento || servicosSelecionados.length === 0) {
-        alert("Por favor, preencha todos os campos e selecione ao menos um serviço.");
-        return;
-    }
+        if (!tutorSelecionado || !petSelecionado || !hora || !dataAgendamento || servicosSelecionados.length === 0) {
+            alert("Por favor, preencha todos os campos e selecione ao menos um serviço.");
+            return;
+        }
 
-    try {
+        try {
 
-        const dataFormatada = dataAgendamento.toISOString().split('T')[0];
+            const dataFormatada = dataAgendamento.toISOString().split('T')[0];
 
-        const payload = {
-            dataAgendamento: dataFormatada,
-            horaAgendamento: hora,
-            statusAgendamentoID: "a92942d7-8db0-4cf0-9923-fd5161999805", 
-            petID: petSelecionado,
-            servicosIds: servicosSelecionados
-        };
+            const payload = {
+                dataAgendamento: dataFormatada,
+                horaAgendamento: hora,
+                statusAgendamentoID: "a92942d7-8db0-4cf0-9923-fd5161999805",
+                petID: petSelecionado,
+                servicosIds: servicosSelecionados
+            };
 
-        console.log("Enviando dados para o C#:", payload);
+            console.log("Enviando dados para o C#:", payload);
 
-        await cadastrarAgendamento(payload);
-        alert("Agendamento cadastrado com sucesso!");
-        
+            await cadastrarAgendamento(payload);
+            alert("Agendamento cadastrado com sucesso!");
 
-        setTutorSelecionado("");
-        setListaPets([]);
-        setPetSelecionado("");
-        setHora("");
-        setDataAgendamento(undefined);
-        setServicosSelecionados([]);
 
-    } catch (error: any) {
-        alert(`Falha ao salvar agendamento: ${error.message}`);
-    }
-};
+            setTutorSelecionado("");
+            setListaPets([]);
+            setPetSelecionado("");
+            setHora("");
+            setDataAgendamento(undefined);
+            setServicosSelecionados([]);
 
-   const obterTextoBotao = () => {
-    if (buscandoServicos) return "Carregando serviços...";
-    
-    if (!servicosSelecionados || servicosSelecionados.length === 0) {
-        return "";
-    }
-    
-    const servicosEncontrados = listaServicos.filter((s) => {
+        } catch (error: any) {
+            alert(`Falha ao salvar agendamento: ${error.message}`);
+        }
+    };
 
-        const atualId = String(s.servicoID || s.ServicoID || s.id || "");
-        return servicosSelecionados.includes(atualId);
-    });
+    const obterTextoBotao = () => {
+        if (buscandoServicos) return "Carregando serviços...";
 
-    if (servicosEncontrados.length === 0) {
-        return "";
-    }
-    return servicosEncontrados
-        .map((s) => s.nomeServico || s.Nome || s.nome || "Sem nome")
-        .join(", ");
-};
+        if (!servicosSelecionados || servicosSelecionados.length === 0) {
+            return "";
+        }
+
+        const servicosEncontrados = listaServicos.filter((s) => {
+
+            const atualId = String(s.servicoID || s.ServicoID || s.id || "");
+            return servicosSelecionados.includes(atualId);
+        });
+
+        if (servicosEncontrados.length === 0) {
+            return "";
+        }
+        return servicosEncontrados
+            .map((s) => s.nomeServico || s.Nome || s.nome || "Sem nome")
+            .join(", ");
+    };
 
     async function carregarServicosDoBanco() {
         setBuscandoServicos(true);
         try {
             const respostaAPI = await listarServicos();
 
-            // Trata o retorno do Axios ou array direto
             const dadosTratados = Array.isArray(respostaAPI)
                 ? respostaAPI
                 : (respostaAPI?.data || []);
@@ -160,6 +150,54 @@ const CadastroAgendamento = () => {
         }
     }
 
+    async function buscarPetsDoTutor() {
+        setBuscandoPets(true);
+        try {
+            const dadosPets = await ListarPetsPorTutor(tutorSelecionado);
+            const petsFiltrados = Array.isArray(dadosPets) ? dadosPets : [];
+            setListaPets(petsFiltrados);
+
+            // Auto-seleciona o primeiro pet se houver, usando a chave correta do banco (PetID)
+            if (petsFiltrados.length > 0) {
+                setPetSelecionado(String(petsFiltrados[0].PetID || petsFiltrados[0].petId));
+            } else {
+                setPetSelecionado("");
+            }
+        } catch (error) {
+            console.error("Erro ao buscar pets:", error);
+            setListaPets([]);
+            setPetSelecionado("");
+        } finally {
+            setBuscandoPets(false);
+        }
+    }
+
+    async function carregarDadosAgendamento() {
+        try {
+            // Chama o seu service de busca por ID
+            const resposta = await listarAgendamentosPorId(id);
+            const dados = resposta.data || resposta;
+
+            // Preenche os estados com o que veio do banco
+            setTutorSelecionado(String(dados.tutorID));
+            setPetSelecionado(String(dados.petID));
+            setHora(dados.horaAgendamento);
+            setDataAgendamento(dados.dataAgendamento);
+
+            // Caso sua API retorne os IDs dos serviços atrelados
+            if (dados.servicosIds) {
+                setServicosSelecionados(dados.servicosIds.map(String));
+            }
+        } catch (error) {
+            console.error("Erro ao carregar dados para edição:", error);
+        }
+    }
+
+    useEffect(() => {
+        if (!isEditMode || !id) return;
+        carregarDadosAgendamento();
+    }, [id, isEditMode]);
+
     useEffect(() => {
         carregarTutoresIniciais();
         carregarServicosDoBanco();
@@ -173,34 +211,45 @@ const CadastroAgendamento = () => {
             return;
         }
 
-        async function buscarPetsDoTutor() {
-            setBuscandoPets(true);
-            try {
-                const dadosPets = await ListarPetsPorTutor(tutorSelecionado);
-                const petsFiltrados = Array.isArray(dadosPets) ? dadosPets : [];
-                setListaPets(petsFiltrados);
+        buscarPetsDoTutor();
+    }, [tutorSelecionado]);
 
-                // Auto-seleciona o primeiro pet se houver, usando a chave correta do banco (PetID)
-                if (petsFiltrados.length > 0) {
-                    setPetSelecionado(String(petsFiltrados[0].PetID || petsFiltrados[0].petId));
-                } else {
-                    setPetSelecionado("");
+    useEffect(() => {
+        if (!isEditMode || !id) return;
+
+        async function carregarDadosAgendamento() {
+            try {
+                // Chama o seu service de busca por ID
+                const resposta = await listarAgendamentosPorId(id);
+                const dados = resposta.data || resposta;
+
+                // Preenche os estados com o que veio do banco
+                setTutorSelecionado(String(dados.tutorID));
+                setPetSelecionado(String(dados.petID));
+                setHora(dados.horaAgendamento);
+                setDataAgendamento(dados.dataAgendamento);
+
+                // Caso sua API retorne os IDs dos serviços atrelados
+                if (dados.servicosIds) {
+                    setServicosSelecionados(dados.servicosIds.map(String));
                 }
             } catch (error) {
-                console.error("Erro ao buscar pets:", error);
-                setListaPets([]);
-                setPetSelecionado("");
-            } finally {
-                setBuscandoPets(false);
+                console.error("Erro ao carregar dados para edição:", error);
             }
         }
 
-        buscarPetsDoTutor();
-    }, [tutorSelecionado]);
+        carregarDadosAgendamento();
+    }, [id, isEditMode]);
+
+
     return (
         <>
-            <div className="w-4/5 h-4/5 bg-[#E5D7BB] rounded-3xl  flex flex-col justify-center items-center !p-8 shadow-[inset_4px_4px_15px_0px_rgba(0,0,0,0.4)]">
-                <h2 className="text-4xl text-start !mb-8 text-[#163923]"> Cadastrar:</h2>
+            <div className="w-4/5 h-4/5 bg-[#E5D7BB] rounded-3xl flex flex-col justify-center items-center !p-8 shadow-[inset_4px_4px_15px_0px_rgba(0,0,0,0.4)]">
+                {/* 1. TÍTULO DINÂMICO */}
+                <h2 className="text-4xl text-start !mb-8 text-[#163923]">
+                    {isEditMode ? "Editar:" : "Cadastrar:"}
+                </h2>
+
                 <form onSubmit={handleSalvar} className="w-4/5 h-1/2 flex flex-col items-center justify-between">
                     <div className="w-full h-1/2 flex items-center ">
                         <div className="flex-1 h-3/4 !mr-[16px]">
@@ -252,7 +301,7 @@ const CadastroAgendamento = () => {
                         </div>
                     </div>
 
-                    <div className="w-4/5 h-1/2 flex items-end">
+                    <div className="w-4/5 h-1/2 flex items-end !mt-8">
                         <div className="flex flex-row items-end !mr-[16px] w-full h-full flex-wrap">
                             <InputData value={dataAgendamento} onChange={setDataAgendamento} />
                         </div>
@@ -302,9 +351,23 @@ const CadastroAgendamento = () => {
                             </DropdownMenu>
                         </div>
                     </div>
-                    <div className="w-1/3 !mt-[16px]">
-                        <Button onClick={handleSalvar} className="w-full h-[58px] bg-[#163923] text-[#FFA800] rounded-2xl shadow-md mt-4"
-                        >Salvar</Button>
+
+                    <div className={`flex flex-row gap-4 !mt-[32px] mx-auto justify-center ${isEditMode ? 'w-2/5' : 'w-1/4'}`}>
+                        {isEditMode && (
+                            <Button
+                                type="button"
+                                onClick={handleCancelar}
+                                className="w-full h-[52px] bg-[#C93B3B] text-white rounded-2xl shadow-md hover:bg-[#A82E2E] transition-colors font-semibold"
+                            >
+                                Cancelar
+                            </Button>
+                        )}
+                        <Button
+                            type="submit"
+                            className="w-full h-[52px] bg-[#163923] text-[#FFA800] rounded-2xl shadow-md hover:bg-[#0F2818] transition-colors font-semibold"
+                        >
+                            Salvar
+                        </Button>
                     </div>
                 </form>
             </div>
@@ -312,4 +375,4 @@ const CadastroAgendamento = () => {
     );
 };
 
-export default CadastroAgendamento;
+export default CadastrarAgendamento;

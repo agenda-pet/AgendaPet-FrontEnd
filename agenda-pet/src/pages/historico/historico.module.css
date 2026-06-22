@@ -8,15 +8,3 @@
     height: 90vh;
     background-color:var(--cor-fundo);
 }
-
-.voltarContainer {
-    margin-top: 20px;
-    padding-top: 10px;
-}
-
-.btnVoltar {
-    color: var(--laranja);
-    cursor: pointer;
-    font-weight: bolder;
-    font-size: 25;
-}

@@ -8,7 +8,7 @@ const Header = () => {
                 <img src="../imgs/LogoAgendaPet.png" alt="Logo Agenda Pet" id={styles.Logo} />
                 <nav className={styles.nav_bar}>
                     <Link href="/agendamentos">Agendamento</Link>
-                    <Link href="/">Histórico</Link>
+                    <Link href="/historico">Histórico</Link>
                     <Link href="/pets">Pets</Link>
                     <Link href="/usuarios">Usuários</Link>
                 </nav>

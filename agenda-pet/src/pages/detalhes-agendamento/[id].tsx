@@ -1,10 +1,11 @@
 import Header from "@/components/header/header";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { listarAgendamentosPorId } from "../api/agendamentoService";
-import styles from "./detalhes.module.css";
+import { listarAgendamentosPorId, listarLogsPorAgendamentoID } from "../api/agendamentoService";
+import styles from "./detalhe.module.css";
 import Link from "next/link";
 import Card from "@/components/card/card";
+import Lista from "@/components/lista/lista";
 
 interface Agendamento {
     agendamentoID: string,
@@ -17,6 +18,15 @@ interface Agendamento {
     valorTotal: number,
 }
 
+export interface LogAgendamento {
+    logAgendamentoID: string;
+    dataModificacao: string;         
+    dataAnteriorAgendameto: string;  
+    statusAgendamentoAnterior: string;
+    servicosPorAgendamento: string;   
+    agendamentoID: string;           
+}
+
 
 const DetalhesAgendamentos = () => {
 
@@ -24,7 +34,23 @@ const DetalhesAgendamentos = () => {
 
     const params = useParams();
 
+    const [logs, setLogs] = useState<LogAgendamento[]>([]);
+
     const id = params?.id;
+
+    async function carregarDadosDaTela() {
+            try {
+                // 1. Busca os dados do agendamento atual
+                const resAgendamento = await listarAgendamentosPorId(String(id));
+                setAgendamento(resAgendamento.data || resAgendamento);
+
+                // 2. Busca o histórico de logs deste agendamento
+                const dadosLogs = await listarLogsPorAgendamentoID(String(id));
+                setLogs(dadosLogs);
+            } catch (error) {
+                console.error("Erro ao carregar dados da tela:", error);
+            }
+        }
 
     async function listarAgendamento() {
         try {
@@ -38,13 +64,13 @@ const DetalhesAgendamentos = () => {
     useEffect(() => {
         if (!id) return;
 
-            listarAgendamento();
+        listarAgendamento();
     }, [id]);
 
     return (
         <>
             <Header />
-            <main>
+            <main className={styles.main}>
 
                 <section className={styles.section}>
                     <div className={styles.containerDetalhes}>
@@ -81,10 +107,13 @@ const DetalhesAgendamentos = () => {
                             </div>
                         </div>
 
-                        <h3 className={styles.subTituloSecao}>Histórico:</h3>
+                        <h3 className={styles.subTituloSecao}>Histórico de Alterações:</h3>
 
                         <div className={styles.historicoLista}>
-                            <Card page="detalheHistoricoItem" />
+                            <Lista
+                                page="listaHistoricoLogs"
+                                agendamentoId={agendamento?.agendamentoID}
+                            />
                         </div>
                     </div>
                 </section>

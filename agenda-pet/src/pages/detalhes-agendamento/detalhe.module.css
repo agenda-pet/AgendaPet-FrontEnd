@@ -1,3 +1,9 @@
+.main{
+    height: 90vh;
+    width: 100%;
+    background-color: var(--cor-fundo);
+}
+
 .section {
     background-color: var(--cor-fundo);
     height: 100%;

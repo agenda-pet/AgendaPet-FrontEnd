@@ -50,11 +50,6 @@ const Usuarios = () => {
         listarTipoUsuarioEmUsuario();
     }, [])
 
-    console.log(nome);
-    console.log(email);
-    console.log(numeroTelefone);
-    console.log(tipoUsuarioSelecionado);
-    console.log(senha);
     return (
         <>
             <Header />
