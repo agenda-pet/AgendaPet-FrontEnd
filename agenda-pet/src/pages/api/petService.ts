@@ -9,11 +9,11 @@ type PetFormulario = {
     usuarioID: string;
 }
 
-type PetAtualizar = {
-    nome: string;
-    comportamentoID: string;
-    porteID: string;
-    usuarioID: string;
+type FormPetAtualizar = {
+    nome: string,
+    comportamentoID: string,
+    porteID: string,
+    usuarioID: string
 }
 
 export async function listarPets() {
@@ -27,11 +27,11 @@ export async function listarPets() {
     }
 }
 
-export async function obterPetPorID(id:string) {
+export async function obterPetPorID(id: string) {
     try {
         const response = await api.get("Pet/" + id);
         return response.data;
-    } catch (error : any) {
+    } catch (error: any) {
         throw new Error(error.response.data)
     }
 }
@@ -51,12 +51,17 @@ export async function cadastrarPets(pet: PetFormulario) {
         throw new Error(error.response.data);
     }
 }
-export async function atualizarPet(id: string, PetAtualizar: PetAtualizar) {
+export async function atualizarPet(id: string, dados: FormPetAtualizar) {
     try {
-        console.log(PetAtualizar)
-        await api.put("Pet/", id + PetAtualizar);
-        console.log("Pet atualizado com sucesso!")
+        console.log(dados)
+        await api.put(`Pet/${id}`, {
+            nome: dados.nome,
+            comportamentoID: dados.comportamentoID,
+            porteID: dados.porteID,
+            usuarioID: dados.usuarioID,
+        });
+        alert("Pet atualizado com sucesso!")
     } catch (error: any) {
-        throw new Error(error.response.data);
+        alert("Selecione todos os campos!!!")
     }
 }

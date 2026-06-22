@@ -42,6 +42,10 @@ interface RacaRecebido {
   racaID: string,
   nomeRaca: string
 }
+interface PorteRecebido {
+  porteID: string,
+  nomeRaca: string
+}
 
 type PetAtualizar = {
   nome: string;
@@ -147,8 +151,9 @@ const EditarPet = () => {
 
               <div className={styles.editar_comportamento}>
                 <label className={styles.comportamento}>Comportamento:</label>
-                <select className={styles.selecionar_comportamento}>
-                  {comportamentos.length <= 0 ? "" : comportamentos.map((comportamento) => (<option value={comportamento.comportamentoID} key={comportamento.comportamentoID} onChange={(e) => setComportamentoID(e.target.value)}>{comportamento.nomeComportamento}</option>))}
+                <select className={styles.selecionar_comportamento} onChange={(e) => setComportamentoID(e.target.value)}>
+                  <option value="">Selecione um comport.</option>
+                  {comportamentos.length <= 0 ? "" : comportamentos.map((comportamento) => (<option value={comportamento.comportamentoID} key={comportamento.comportamentoID}>{comportamento.nomeComportamento}</option>))}
                 </select>
               </div>
 
@@ -158,8 +163,9 @@ const EditarPet = () => {
 
               <div className={styles.editar_porte}>
                 <label className={styles.porte}>Porte:</label>
-                <select className={styles.selecionar_porte}>
-                  {portes.length <= 0 ? "" : portes.map((porte) => (<option value={porte.porteID} key={porte.porteID} onChange={(e) => setPorteID(e.target.value)}>{porte.nomePorte}</option>))}
+                <select className={styles.selecionar_porte} onChange={(e) => setPorteID(e.target.value)}>
+                  <option value="">Selecione o porte</option>
+                  {portes.length <= 0 ? "" : portes.map((porte) => (<option value={porte.porteID} key={porte.porteID} >{porte.nomePorte}</option>))}
                 </select>
               </div>
 
@@ -172,6 +178,8 @@ const EditarPet = () => {
 
               <div className={styles.editar_raca}>
                 <label className={styles.raca}>Raça:</label>
+                
+
                 <select className={styles.selecionar_raca} disabled>
                   {racas.length <= 0 ? "" : (<option value={petObtido?.racaID}>{petObtido?.nomeRaca}</option>)}
                 </select>

@@ -7,6 +7,7 @@ export async function listarPorte () {
 
         return response.data
     } catch (error: any) {
-        throw new Error(error.response.data);
+        const message = error?.response?.data ?? error?.message ?? String(error);
+        throw new Error(message);
     }
 }

@@ -1,7 +1,7 @@
-import { api } from "./api";
+import { api } from "@/pages/api/api";
 
 
-export async function listarComportamento () {
+export async function listarComportamento() {
     try {
         const response = await api.get("ComportamentoPet");
         console.log(response.data)
