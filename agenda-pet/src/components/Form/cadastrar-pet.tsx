@@ -110,7 +110,7 @@ const CadastrarPet = () => {
     return (
         <>
             <div className=" !max-w-[800px] w-4/5 !p-4 !m-6 bg-[#E5D7BB] rounded-3xl  flex flex-col shadow-[inset_4px_4px_15px_0px_rgba(0,0,0,0.4)] justify-center items-center ">
-                <h2 className="text-4xl text-start !mb-8 text-[#163923]"> Cadastrar:</h2>
+                <h2 className="text-4xl text-start font-semibold !mb-8 text-[#163923]"> Cadastrar:</h2>
                 <form onSubmit={salvarPet} className="w-4/5 !p-9 flex flex-col gap-6 items-center">
                     <div className="w-full flex items-start">
                         <div className="flex-1 !mr-[16px]">

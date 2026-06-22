@@ -54,6 +54,9 @@ const Usuarios = () => {
         <>
             <Header />
             <main className={styles.main}>
+                <div className={styles.voltarContainer}>
+                    <h1 className="text-5xl font-semibold text-[#163923]">Usuário</h1>
+                </div>
                 <div className="w-4/5 h-4/5 flex justify-center items-center !m-10">
                     <CadastrarTutor />
                 </div>

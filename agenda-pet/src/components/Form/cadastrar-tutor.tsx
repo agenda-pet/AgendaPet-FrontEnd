@@ -116,8 +116,8 @@ const CadastrarTutor = () => {
         <>
             <div className="w-1/2 !p-4 bg-[#E5D7BB] rounded-3xl flex flex-col shadow-[inset_4px_4px_15px_0px_rgba(0,0,0,0.4)] justify-center items-center !p-9">
                 {/* 💡 Título Dinâmico */}
-                <h2 className="text-4xl text-start !mb-8 text-[#163923]">
-                    {isEditMode ? "Editar Tutor:" : "Cadastrar Tutor:"}
+                <h2 className="text-4xl text-start font-semibold !mb-8 text-[#163923]">
+                    {isEditMode ? "Editar:" : "Cadastrar:"}
                 </h2>
                 
                 <form onSubmit={handleSubmit} className="w-4/5 flex flex-col items-center gap-6">

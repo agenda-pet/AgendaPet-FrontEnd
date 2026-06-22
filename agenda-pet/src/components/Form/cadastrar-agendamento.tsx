@@ -249,14 +249,14 @@ const CadastrarAgendamento = () => {
 
     return (
         <>
-            <div className=" !max-w-[700px] w-4/5 !p-8 bg-[#E5D7BB] rounded-3xl flex flex-col justify-center items-center shadow-[inset_4px_4px_15px_0px_rgba(0,0,0,0.4)]">
-                <h2 className="text-4xl text-start text-[#163923] mb-4">
+            <div className=" !max-w-[700px] w-4/6 !p-8 bg-[#E5D7BB] rounded-3xl flex flex-col justify-center items-center shadow-[inset_4px_4px_15px_0px_rgba(0,0,0,0.4)]">
+                <h2 className="text-4xl text-start font-semibold text-[#163923] mb-4">
                     {isEditMode ? "Editar:" : "Cadastrar:"}
                 </h2>
 
                 {/* 💡 Atualizado para handleSubmit dinâmico */}
-                <form onSubmit={handleSubmit} className="w-4/5 h-1/2 flex flex-col items-center justify-between">
-                    <div className="w-full h-1/2 flex items-center ">
+                <form onSubmit={handleSubmit} className="w-4/5 flex flex-col items-center justify-between">
+                    <div className="w-full flex items-center ">
                         <div className="flex-1 h-3/4 !mr-[16px]">
                             <FormSelect
                                 label="Tutor:"

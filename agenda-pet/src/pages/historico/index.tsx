@@ -6,7 +6,9 @@ const index = () => {
         <>
             <Header />
             <main className={style.main}>
-                <h1 className="text-6xl text-[#163923] !p-4 !m-8">histórico</h1>
+                <div className={style.voltarContainer}>
+                    <h1 className="text-5xl font-semibold text-[#163923]">Histórico</h1>
+                </div>
                 <Lista page="listaHistorico" />
             </main>
         </>
