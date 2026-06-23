@@ -140,7 +140,6 @@ const Lista = ({ page, usuarioId, agendamentoId }: ListaProps) => {
 
     return (
         <>
-            {/* --- LISTA DE AGENDAMENTOS PENDENTES --- */}
             {page === "listaAgendamento" && (
                 <section className={styles.section}>
                     <table className={styles.tabelaLista}>
@@ -153,12 +152,13 @@ const Lista = ({ page, usuarioId, agendamentoId }: ListaProps) => {
                                 <th>Pets</th>
                                 <th>Serviços</th>
                                 <th>Editar</th>
+                                <th>Concluir</th>
                             </tr>
-                         </thead>
+                        </thead>
                         <tbody id={styles.tbody}>
                             {loading ? (
                                 <tr>
-                                    <td colSpan={7}>Carregando agendamentos...</td>
+                                    <td colSpan={8}>Carregando agendamentos...</td> {/* 💡 Ajustado colSpan para 8 */}
                                 </tr>
                             ) : agendamentos && agendamentos.filter((a) => a.nomeStatus === "Pendente").length > 0 ? (
                                 agendamentos
@@ -172,7 +172,7 @@ const Lista = ({ page, usuarioId, agendamentoId }: ListaProps) => {
                                     ))
                             ) : (
                                 <tr>
-                                    <td colSpan={7}>Nenhum agendamento pendente encontrado</td>
+                                    <td colSpan={8}>Nenhum agendamento pendente encontrado</td> {/* 💡 Ajustado colSpan para 8 */}
                                 </tr>
                             )}
                         </tbody>
