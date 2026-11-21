@@ -1,0 +1,21 @@
+#section {
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+    width: 75%;
+    height: 20%;
+
+    border-radius: 10px;
+    box-shadow: var(--sombra-card);
+    background-color: var(--cor-card);
+}
+
+#section div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
